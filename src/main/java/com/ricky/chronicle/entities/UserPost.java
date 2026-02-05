@@ -38,16 +38,14 @@ public class UserPost {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
         name="user_id",
-        nullable = false,
-        columnDefinition = "uuid"
+        nullable = false
     )
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
         name="post_id",
-        nullable = false,
-        columnDefinition = "uuid"
+        nullable = false
     )
     private Post post;
 

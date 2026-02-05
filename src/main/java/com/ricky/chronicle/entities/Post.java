@@ -1,6 +1,7 @@
 package com.ricky.chronicle.entities;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,6 +27,7 @@ import lombok.Setter;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable=false)
     private String title;

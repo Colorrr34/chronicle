@@ -38,8 +38,7 @@ public class UserFeed {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
         name="user_id",
-        nullable = false,
-        columnDefinition = "uuid"
+        nullable = false
     )
     private User user;
 
