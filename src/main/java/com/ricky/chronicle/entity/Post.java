@@ -1,4 +1,4 @@
-package com.ricky.chronicle.entitie;
+package com.ricky.chronicle.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;

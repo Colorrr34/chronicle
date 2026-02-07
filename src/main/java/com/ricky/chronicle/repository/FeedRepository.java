@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ricky.chronicle.entitie.Feed;
+import com.ricky.chronicle.entity.Feed;
 
 @Repository
 public interface FeedRepository extends JpaRepository<Feed,UUID>{
@@ -20,5 +20,5 @@ public interface FeedRepository extends JpaRepository<Feed,UUID>{
             JOIN f.feedsByUsers u
             WHERE u.user.username = :username
             """)
-    List<Feed> findAllByFeedsByUsers(@Param("username")String username);
+    List<Feed> findAllFeedsByUserUsername(@Param("username")String username);
 }

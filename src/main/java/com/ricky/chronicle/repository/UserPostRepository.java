@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ricky.chronicle.entitie.UserPost;
+import com.ricky.chronicle.entity.UserPost;
 
 @Repository
 public interface UserPostRepository extends JpaRepository<UserPost,UUID>{
