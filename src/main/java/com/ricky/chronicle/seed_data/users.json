@@ -1,0 +1,7 @@
+[
+  { "username": "CodeMaster_42", "raw_password": "secure_password_1" },
+  { "username": "DataDiver_77", "raw_password": "secure_password_2" },
+  { "username": "JavaJuggler", "raw_password": "secure_password_3" },
+  { "username": "BugHunterX", "raw_password": "secure_password_4" },
+  { "username": "DevOps_Guru", "raw_password": "secure_password_5" }
+]

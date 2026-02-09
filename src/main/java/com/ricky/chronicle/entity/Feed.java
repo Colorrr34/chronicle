@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -41,10 +43,12 @@ public class Feed {
     @JoinColumn(name="topic_id",nullable = false)
     private Topic topic;
 
-    @Column(nullable = false)
+    @Column(nullable = false,updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "feed")

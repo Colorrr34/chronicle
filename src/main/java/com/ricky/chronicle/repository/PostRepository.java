@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Post;
 
 import java.util.List;
@@ -20,8 +19,9 @@ public interface PostRepository extends JpaRepository<Post,UUID>{
 
     @Query("""
             SELECT p FROM Post p
-            JOIN p.postsByUsers u
+            LEFT JOIN FETCH p.postsByUsers u
+            LEFT JOIN FETCH u.user
             WHERE u.user.username = :username
             """)
-    List<Feed> findAllPostsByUserUsername(@Param("username")String username);
+    List<Post> findAllPostsByUserUsername(@Param("username")String username);
 }

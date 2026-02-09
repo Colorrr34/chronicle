@@ -3,6 +3,8 @@ package com.ricky.chronicle.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -51,6 +53,7 @@ public class UserPost {
     )
     private Post post;
 
-    @Column(nullable = false)
+    @Column(nullable = false,updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 }

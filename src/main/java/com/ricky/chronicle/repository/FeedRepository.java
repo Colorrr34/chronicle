@@ -17,7 +17,8 @@ public interface FeedRepository extends JpaRepository<Feed,UUID>{
 
     @Query("""
             SELECT f FROM Feed f
-            JOIN f.feedsByUsers u
+            LEFT JOIN fetch f.feedsByUsers u
+            LEFT JOIN fetch u.user
             WHERE u.user.username = :username
             """)
     List<Feed> findAllFeedsByUserUsername(@Param("username")String username);
