@@ -44,7 +44,7 @@ public class UserServiceTest {
         when(mockUserRepository.findByUsername("testUser1")).thenReturn(Optional.empty());
         when(mockUserRepository.save(any(User.class))).thenReturn(mockUser);
 
-        User mockedServiceUser = userService.createUser("testUser1", rawPassword);
+        User mockServiceUser = userService.createUser("testUser1", rawPassword);
         
         verify(mockAuthService,times(1)).hashPassword(rawPassword);
 
@@ -54,8 +54,8 @@ public class UserServiceTest {
             &&user.getHashedPassword().equals(hashedPassword))
         );
             
-        assertThat(mockedServiceUser).isNotNull();
-        assertThat(mockedServiceUser.getHashedPassword()).isEqualTo(hashedPassword);
+        assertThat(mockServiceUser).isNotNull();
+        assertThat(mockServiceUser.getHashedPassword()).isEqualTo(hashedPassword);
     }
 
     @Test

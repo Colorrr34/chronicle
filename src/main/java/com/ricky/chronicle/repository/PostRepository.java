@@ -17,6 +17,8 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post,UUID>{
     Optional<Post> findByTitle(String title);
 
+    Optional<Post> findByUrl(String url);
+
     @Query("""
             SELECT p FROM Post p
             LEFT JOIN FETCH p.postsByUsers u

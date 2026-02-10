@@ -2,256 +2,349 @@
   {
     "title": "Intro to JVM Memory",
     "description": "Understanding heap vs. stack allocation.",
-    "feed_ref": "Java Performance Tuning"
+    "feed_ref": "Java Performance Tuning",
+    "external_url": "http://example.com/posts/jvm-memory-guide"
   },
   {
     "title": "The Power of Spring Beans",
     "description": "How dependency injection simplifies code.",
-    "feed_ref": "Spring Boot Secrets"
+    "feed_ref": "Spring Boot Secrets",
+    "external_url": "http://example.com/posts/spring-beans-deepdive"
   },
   {
     "title": "B-Tree Indexing Explained",
     "description": "How B-Trees speed up SELECT queries.",
-    "feed_ref": "SQL Indexing Deep Dive"
+    "feed_ref": "SQL Indexing Deep Dive",
+    "external_url": "http://example.com/posts/btree-indexing"
   },
   {
     "title": "Choosing the Right RDBMS",
     "description": "Comparing PostgreSQL features for scale.",
-    "feed_ref": "PostgreSQL vs MySQL"
+    "feed_ref": "PostgreSQL vs MySQL",
+    "external_url": "http://example.com/posts/rdbms-comparison"
   },
   {
-    "title": "Dockerfile Best Practices",
+    "title": "Containerizing with Docker",
     "description": "Minimizing image size with multi-stage builds.",
-    "feed_ref": "Containerizing with Docker"
+    "feed_ref": "Containerizing with Docker",
+    "external_url": "http://example.com/posts/docker-best-practices"
   },
   {
     "title": "Mastering AssertJ Fluent API",
     "description": "Writing cleaner, more readable assertions.",
-    "feed_ref": "JUnit 5 Advanced"
+    "feed_ref": "JUnit 5 Advanced",
+    "external_url": "http://example.com/posts/assertj-fluent-guide"
   },
   {
     "title": "Using Mocks vs. Spies",
     "description": "When to use each mocking tool in Mockito.",
-    "feed_ref": "Mocking with Mockito"
+    "feed_ref": "Mocking with Mockito",
+    "external_url": "http://example.com/posts/mocks-vs-spies"
   },
   {
     "title": "Custom Hooks for Performance",
     "description": "Optimizing component re-renders in React.",
-    "feed_ref": "React Hooks Performance"
+    "feed_ref": "React Hooks Performance",
+    "external_url": "http://example.com/posts/react-hooks-perf"
   },
   {
     "title": "Composition vs. Inheritance in Vue",
     "description": "Deciding on the best state pattern.",
-    "feed_ref": "Vue 3 Composition API"
+    "feed_ref": "Vue 3 Composition API",
+    "external_url": "http://example.com/posts/vue-composition-vs-options"
   },
   {
     "title": "JVM Memory Leaks Debugging",
     "description": "Using JProfiler to trace object retention.",
-    "feed_ref": "Java Performance Tuning"
+    "feed_ref": "Java Performance Tuning",
+    "external_url": "http://example.com/posts/jvm-leak-debugging"
   },
   {
     "title": "Event-Driven Architecture in Spring",
     "description": "Implementing reliable messaging with RabbitMQ.",
-    "feed_ref": "Spring Boot Secrets"
+    "feed_ref": "Spring Boot Secrets",
+    "external_url": "http://example.com/posts/spring-event-driven"
   },
   {
     "title": "Optimizing Transaction Isolation Levels",
     "description": "Understanding SERIALIZABLE vs READ COMMITTED.",
-    "feed_ref": "SQL Indexing Deep Dive"
+    "feed_ref": "SQL Indexing Deep Dive",
+    "external_url": "http://example.com/posts/sql-isolation-levels"
   },
   {
     "title": "Scaling with CockroachDB",
     "description": "A look at distributed SQL.",
-    "feed_ref": "PostgreSQL vs MySQL"
+    "feed_ref": "PostgreSQL vs MySQL",
+    "external_url": "http://example.com/posts/cockroachdb-scaling"
   },
   {
     "title": "Immutable Images in CI/CD",
     "description": "Ensuring deployment consistency.",
-    "feed_ref": "Containerizing with Docker"
+    "feed_ref": "Containerizing with Docker",
+    "external_url": "http://example.com/posts/ci-cd-immutable-images"
   },
   {
     "title": "Parameterized Tests in JUnit",
     "description": "Running the same test logic with different inputs.",
-    "feed_ref": "JUnit 5 Advanced"
+    "feed_ref": "JUnit 5 Advanced",
+    "external_url": "http://example.com/posts/junit-parameterized-tests"
   },
   {
     "title": "Capturing Arguments in Mockito",
     "description": "Verifying exactly what was passed to a mock.",
-    "feed_ref": "Mocking with Mockito"
+    "feed_ref": "Mocking with Mockito",
+    "external_url": "http://example.com/posts/mockito-argument-captor"
   },
   {
     "title": "Memoization with useCallback",
     "description": "Preventing unnecessary re-renders of functions.",
-    "feed_ref": "React Hooks Performance"
+    "feed_ref": "React Hooks Performance",
+    "external_url": "http://example.com/posts/react-usecallback-guide"
   },
   {
     "title": "Reactivity in Vue 3",
     "description": "How the new reactivity system works under the hood.",
-    "feed_ref": "Vue 3 Composition API"
+    "feed_ref": "Vue 3 Composition API",
+    "external_url": "http://example.com/posts/vue3-reactivity"
   },
   {
     "title": "Garbage Collection Tuning",
     "description": "Configuring G1GC for a high-throughput service.",
-    "feed_ref": "Java Performance Tuning"
+    "feed_ref": "Java Performance Tuning",
+    "external_url": "http://example.com/posts/g1gc-tuning"
   },
   {
     "title": "Spring Security OAuth2 Setup",
     "description": "Configuring external authentication providers.",
-    "feed_ref": "Spring Boot Secrets"
+    "feed_ref": "Spring Boot Secrets",
+    "external_url": "http://example.com/posts/spring-oauth2-setup"
   },
   {
     "title": "Handling Deadlocks in Transactions",
     "description": "Strategies for rollback and retry logic.",
-    "feed_ref": "SQL Indexing Deep Dive"
-  },
-  {
-    "title": "Cloud Cost Management Tips",
-    "description": "Reserved instances vs. spot pricing.",
-    "feed_ref": "Cloud Infrastructure"
-  },
-  {
-    "title": "Implementing Smoke Tests",
-    "description": "Quick checks for service availability on deployment.",
-    "feed_ref": "Testing Strategies"
-  },
-  {
-    "title": "Server Components vs. Client Components",
-    "description": "Understanding the shift in modern React.",
-    "feed_ref": "React Hooks Performance"
-  },
-  {
-    "title": "Transitioning from Options API to Composition API",
-    "description": "A practical guide for large Vue projects.",
-    "feed_ref": "Vue 3 Composition API"
-  },
-  {
-    "title": "Analyzing Thread Dumps",
-    "description": "Using VisualVM to diagnose slow performance.",
-    "feed_ref": "Java Performance Tuning"
-  },
-  {
-    "title": "Customizing Spring Boot Actuator Endpoints",
-    "description": "Exposing internal metrics securely.",
-    "feed_ref": "Spring Boot Secrets"
-  },
-  {
-    "title": "Using Stored Procedures Safely",
-    "description": "Balancing SQL power with application security.",
-    "feed_ref": "SQL Indexing Deep Dive"
-  },
-  {
-    "title": "Infrastructure as Code with Ansible",
-    "description": "Automating server setup predictably.",
-    "feed_ref": "Containerizing with Docker"
-  },
-  {
-    "title": "Designing Effective Integration Tests",
-    "description": "When to use WireMock vs. actual services.",
-    "feed_ref": "Testing Strategies"
-  },
-  {
-    "title": "State Management Libraries Comparison",
-    "description": "Redux vs. Zustand vs. Context API.",
-    "feed_ref": "React Hooks Performance"
-  },
-  {
-    "title": "Pinia State Management in Vue",
-    "description": "The modern standard for Vue state.",
-    "feed_ref": "Vue 3 Composition API"
-  },
-  {
-    "title": "Using JIT Compiler Insights",
-    "description": "Understanding C1 and C2 compilers.",
-    "feed_ref": "Java Performance Tuning"
-  },
-  {
-    "title": "Advanced Caching with Redis",
-    "description": "Implementing distributed caching for microservices.",
-    "feed_ref": "Spring Boot Secrets"
-  },
-  {
-    "title": "NoSQL Data Modeling Pitfalls",
-    "description": "Avoiding query-time joins in MongoDB.",
-    "feed_ref": "PostgreSQL vs MySQL"
-  },
-  {
-    "title": "Managing Cloud Secrets",
-    "description": "Using AWS Secrets Manager effectively.",
-    "feed_ref": "Cloud Infrastructure"
-  },
-  {
-    "title": "Performance Testing Tools",
-    "description": "Introduction to JMeter and k6.",
-    "feed_ref": "Testing Strategies"
-  },
-  {
-    "title": "Server-Side Rendering Benefits",
-    "description": "Improving initial load performance.",
-    "feed_ref": "React Hooks Performance"
-  },
-  {
-    "title": "Vue Teleport for Modals",
-    "description": "Using Teleport to break out of the component tree.",
-    "feed_ref": "Vue 3 Composition API"
-  },
-  {
-    "title": "Profiling with Async-Await Overhead",
-    "description": "Understanding the cost of asynchronous operations.",
-    "feed_ref": "Java Performance Tuning"
-  },
-  {
-    "title": "Service Discovery with Eureka/Consul",
-    "description": "How services find each other in a cluster.",
-    "feed_ref": "Spring Boot Secrets"
-  },
-  {
-    "title": "Data Migration Strategies",
-    "description": "Blue/Green deployments for the database.",
-    "feed_ref": "SQL Indexing Deep Dive"
+    "feed_ref": "SQL Indexing Deep Dive",
+    "external_url": "http://example.com/posts/sql-deadlocks-strategies"
   },
   {
     "title": "Security Groups and Firewalls in AWS",
     "description": "Locking down your VPC resources.",
-    "feed_ref": "Cloud Infrastructure"
+    "feed_ref": "Cloud Infrastructure",
+    "external_url": "http://example.com/posts/aws-security-groups"
   },
   {
-    "title": "Fuzz Testing for Input Validation",
-    "description": "Automatically generating unexpected input.",
-    "feed_ref": "Testing Strategies"
+    "title": "Implementing Smoke Tests",
+    "description": "Quick checks for service availability on deployment.",
+    "feed_ref": "Testing Strategies",
+    "external_url": "http://example.com/posts/ci-smoke-tests"
   },
   {
-    "title": "Optimizing Image Loading",
-    "description": "Using WebP and lazy loading.",
-    "feed_ref": "React Hooks Performance"
+    "title": "Server Components vs. Client Components",
+    "description": "Understanding the shift in modern React.",
+    "feed_ref": "React Hooks Performance",
+    "external_url": "http://example.com/posts/react-server-components"
   },
   {
-    "title": "Vue Transitions and Animations",
-    "description": "Creating smooth UI updates.",
-    "feed_ref": "Vue 3 Composition API"
+    "title": "Pinia State Management in Vue",
+    "description": "The modern standard for Vue state.",
+    "feed_ref": "Vue 3 Composition API",
+    "external_url": "http://example.com/posts/vue-pinia-guide"
   },
   {
-    "title": "Profiling Memory Leaks in Threads",
-    "description": "Advanced garbage collection analysis.",
-    "feed_ref": "Java Performance Tuning"
+    "title": "Analyzing Thread Dumps",
+    "description": "Using VisualVM to diagnose slow performance.",
+    "feed_ref": "Java Performance Tuning",
+    "external_url": "http://example.com/posts/thread-dump-analysis"
   },
   {
-    "title": "Implementing Circuit Breakers",
-    "description": "Preventing cascading failures in microservices.",
-    "feed_ref": "Spring Boot Secrets"
+    "title": "Customizing Spring Boot Actuator Endpoints",
+    "description": "Exposing internal metrics securely.",
+    "feed_ref": "Spring Boot Secrets",
+    "external_url": "http://example.com/posts/spring-actuator-custom"
   },
   {
     "title": "When to Denormalize Data",
     "description": "Trade-offs between query speed and data redundancy.",
-    "feed_ref": "PostgreSQL vs MySQL"
+    "feed_ref": "PostgreSQL vs MySQL",
+    "external_url": "http://example.com/posts/nosql-denormalization"
   },
   {
     "title": "Managing IAM Roles in Terraform",
     "description": "Defining cloud permissions programmatically.",
-    "feed_ref": "Cloud Infrastructure"
+    "feed_ref": "Cloud Infrastructure",
+    "external_url": "http://example.com/posts/terraform-iam-roles"
   },
   {
     "title": "End-to-End Testing with Cypress",
     "description": "Simulating full user flows in E2E.",
-    "feed_ref": "Testing Strategies"
+    "feed_ref": "Testing Strategies",
+    "external_url": "http://example.com/posts/cypress-e2e-guide"
+  },
+  {
+    "title": "Optimizing Image Loading",
+    "description": "Using WebP and lazy loading.",
+    "feed_ref": "React Hooks Performance",
+    "external_url": "http://example.com/posts/image-optimization-web"
+  },
+  {
+    "title": "Vue Transitions and Animations",
+    "description": "Creating smooth UI updates.",
+    "feed_ref": "Vue 3 Composition API",
+    "external_url": "http://example.com/posts/vue-transitions"
+  },
+  {
+    "title": "Profiling with Async-Await Overhead",
+    "description": "Understanding the cost of asynchronous operations.",
+    "feed_ref": "Java Performance Tuning",
+    "external_url": "http://example.com/posts/async-await-cost"
+  },
+  {
+    "title": "Service Discovery with Eureka/Consul",
+    "description": "How services find each other in a cluster.",
+    "feed_ref": "Spring Boot Secrets",
+    "external_url": "http://example.com/posts/spring-service-discovery"
+  },
+  {
+    "title": "Data Migration Strategies",
+    "description": "Blue/Green deployments for the database.",
+    "feed_ref": "SQL Indexing Deep Dive",
+    "external_url": "http://example.com/posts/db-migration-bluegreen"
+  },
+  {
+    "title": "Security Groups and Firewalls in AWS",
+    "description": "Locking down your VPC resources.",
+    "feed_ref": "Cloud Infrastructure",
+    "external_url": "http://example.com/posts/aws-firewall-guide"
+  },
+  {
+    "title": "Fuzz Testing for Input Validation",
+    "description": "Automatically generating unexpected input.",
+    "feed_ref": "Testing Strategies",
+    "external_url": "http://example.com/posts/fuzz-testing-inputs"
+  },
+  {
+    "title": "State Management Libraries Comparison",
+    "description": "Redux vs. Zustand vs. Context API.",
+    "feed_ref": "React Hooks Performance",
+    "external_url": "http://example.com/posts/react-state-comparison"
+  },
+  {
+    "title": "Pinia State Management in Vue",
+    "description": "The modern standard for Vue state.",
+    "feed_ref": "Vue 3 Composition API",
+    "external_url": "http://example.com/posts/vue-pinia-state"
+  },
+  {
+    "title": "Profiling Memory Leaks in Threads",
+    "description": "Advanced garbage collection analysis.",
+    "feed_ref": "Java Performance Tuning",
+    "external_url": "http://example.com/posts/java-thread-memory-leaks"
+  },
+  {
+    "title": "Implementing Circuit Breakers",
+    "description": "Preventing cascading failures in microservices.",
+    "feed_ref": "Spring Boot Secrets",
+    "external_url": "http://example.com/posts/spring-circuit-breaker"
+  },
+  {
+    "title": "When to Denormalize Data",
+    "description": "Trade-offs between query speed and data redundancy.",
+    "feed_ref": "PostgreSQL vs MySQL",
+    "external_url": "http://example.com/posts/nosql-denormalization"
+  },
+  {
+    "title": "Managing IAM Roles in Terraform",
+    "description": "Defining cloud permissions programmatically.",
+    "feed_ref": "Cloud Infrastructure",
+    "external_url": "http://example.com/posts/terraform-iam-roles-setup"
+  },
+  {
+    "title": "End-to-End Testing with Cypress",
+    "description": "Simulating full user flows in E2E.",
+    "feed_ref": "Testing Strategies",
+    "external_url": "http://example.com/posts/cypress-e2e-guide"
+  },
+  {
+    "title": "Optimizing Image Loading",
+    "description": "Using WebP and lazy loading.",
+    "feed_ref": "React Hooks Performance",
+    "external_url": "http://example.com/posts/image-optimization-web"
+  },
+  {
+    "title": "Vue Teleport for Modals",
+    "description": "Using Teleport to break out of the component tree.",
+    "feed_ref": "Vue 3 Composition API",
+    "external_url": "http://example.com/posts/vue-teleport-modals"
+  },
+  {
+    "title": "Profiling with Async-Await Overhead",
+    "description": "Understanding the cost of asynchronous operations.",
+    "feed_ref": "Java Performance Tuning",
+    "external_url": "http://example.com/posts/async-await-cost-analysis"
+  },
+  {
+    "title": "Service Discovery with Eureka/Consul",
+    "description": "How services find each other in a cluster.",
+    "feed_ref": "Spring Boot Secrets",
+    "external_url": "http://example.com/posts/spring-service-discovery-guide"
+  },
+  {
+    "title": "Data Migration Strategies",
+    "description": "Blue/Green deployments for the database.",
+    "feed_ref": "SQL Indexing Deep Dive",
+    "external_url": "http://example.com/posts/db-migration-bluegreen"
+  },
+  {
+    "title": "Security Groups and Firewalls in AWS",
+    "description": "Locking down your VPC resources.",
+    "feed_ref": "Cloud Infrastructure",
+    "external_url": "http://example.com/posts/aws-firewall-guide-new"
+  },
+  {
+    "title": "Fuzz Testing for Input Validation",
+    "description": "Automatically generating unexpected input.",
+    "feed_ref": "Testing Strategies",
+    "external_url": "http://example.com/posts/fuzz-testing-advanced"
+  },
+  {
+    "title": "State Management Libraries Comparison",
+    "description": "Redux vs. Zustand vs. Context API.",
+    "feed_ref": "React Hooks Performance",
+    "external_url": "http://example.com/posts/react-state-comparison-2024"
+  },
+  {
+    "title": "Pinia State Management in Vue",
+    "description": "The modern standard for Vue state.",
+    "feed_ref": "Vue 3 Composition API",
+    "external_url": "http://example.com/posts/vue-pinia-setup"
+  },
+  {
+    "title": "Analyzing Thread Dumps",
+    "description": "Advanced garbage collection analysis.",
+    "feed_ref": "Java Performance Tuning",
+    "external_url": "http://example.com/posts/java-thread-dump-deepdive"
+  },
+  {
+    "title": "Implementing Circuit Breakers",
+    "description": "Preventing cascading failures in microservices.",
+    "feed_ref": "Spring Boot Secrets",
+    "external_url": "http://example.com/posts/spring-circuit-breaker-resilience"
+  },
+  {
+    "title": "When to Denormalize Data",
+    "description": "Trade-offs between query speed and data redundancy.",
+    "feed_ref": "PostgreSQL vs MySQL",
+    "external_url": "http://example.com/posts/nosql-denormalization-tradeoffs"
+  },
+  {
+    "title": "Managing IAM Roles in Terraform",
+    "description": "Defining cloud permissions programmatically.",
+    "feed_ref": "Cloud Infrastructure",
+    "external_url": "http://example.com/posts/terraform-iam-roles-new"
+  },
+  {
+    "title": "End-to-End Testing with Cypress",
+    "description": "Simulating full user flows in E2E.",
+    "feed_ref": "Testing Strategies",
+    "external_url": "http://example.com/posts/cypress-e2e-guide-v2"
   }
 ]

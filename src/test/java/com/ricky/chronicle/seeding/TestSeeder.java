@@ -90,6 +90,7 @@ public class TestSeeder {
             Post post = new Post();
             post.setTitle(faker.lorem().sentence(10));
             post.setDescription(faker.lorem().sentence());
+            post.setUrl(faker.internet().url());
             post.setFeed(seededFeeds.get(i%seededFeeds.size()));
             Post seededPost = postRepository.save(post);
             seededPosts.add(seededPost);

@@ -48,6 +48,9 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
+    @Column(nullable = false,unique = true)
+    private String url;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="feed_id",nullable = false)
     private Feed feed;
