@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.ricky.chronicle.auth.AuthService;
+import com.ricky.chronicle.dto.user.CreateUserRequest;
+import com.ricky.chronicle.dto.user.UserResponse;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.repository.UserRepository;
 
@@ -18,7 +20,9 @@ public class UserService {
         this.authService = authService;
     }
 
-    public User createUser(String username, String rawPassword){
+    public UserResponse createUser(CreateUserRequest request){
+        String username = request.username();
+        String rawPassword = request.rawPassword();
         if (userRepository.findByUsername(username).isPresent()){
             throw new IllegalArgumentException("username already exists");
         }
@@ -26,8 +30,16 @@ public class UserService {
         User user = new User();
         user.setUsername(username);
         user.setHashedPassword(hashedPassword);
+        User savedUser = userRepository.save(user);
+        UserResponse response = new UserResponse(
+            savedUser.getId(), 
+            savedUser.getUsername(), 
+            savedUser.getCreatedAt(), 
+            savedUser.getUpdatedAt(), 
+            savedUser.getLastLoggedInAt()
+        );
         
-        return userRepository.save(user);
+        return response;
     }
 
     public Optional<User> findUserByUsername(String username){
