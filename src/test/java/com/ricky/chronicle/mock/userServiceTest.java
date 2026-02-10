@@ -22,12 +22,12 @@ import com.ricky.chronicle.repository.UserRepository;
 import com.ricky.chronicle.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
-public class userServiceTest {
+public class UserServiceTest {
     @Mock
-    UserRepository mockedUserRepository;
+    UserRepository mockUserRepository;
 
     @Mock
-    AuthService mockedAuthService;
+    AuthService mockAuthService;
 
     @InjectMocks
     UserService userService;
@@ -36,19 +36,19 @@ public class userServiceTest {
     void createUser_shouldHashPasswordAndSaveUser(){
         String rawPassword = "test_password123";
         String hashedPassword = "hashedPassword";
-        User mockedUser = new User();
-        mockedUser.setUsername("testUser1");
-        mockedUser.setHashedPassword(hashedPassword);
+        User mockUser = new User();
+        mockUser.setUsername("testUser1");
+        mockUser.setHashedPassword(hashedPassword);
         
-        when(mockedAuthService.hashPassword(rawPassword)).thenReturn(hashedPassword);
-        when(mockedUserRepository.findByUsername("testUser1")).thenReturn(Optional.empty());
-        when(mockedUserRepository.save(any(User.class))).thenReturn(mockedUser);
+        when(mockAuthService.hashPassword(rawPassword)).thenReturn(hashedPassword);
+        when(mockUserRepository.findByUsername("testUser1")).thenReturn(Optional.empty());
+        when(mockUserRepository.save(any(User.class))).thenReturn(mockUser);
 
         User mockedServiceUser = userService.createUser("testUser1", rawPassword);
         
-        verify(mockedAuthService,times(1)).hashPassword(rawPassword);
+        verify(mockAuthService,times(1)).hashPassword(rawPassword);
 
-        verify(mockedUserRepository,times(1)).save(argThat(
+        verify(mockUserRepository,times(1)).save(argThat(
             user->
             user.getUsername().equals("testUser1")
             &&user.getHashedPassword().equals(hashedPassword))
@@ -60,12 +60,12 @@ public class userServiceTest {
 
     @Test
     void createUser_shouldThrowException_whenUsernameExists(){
-        when(mockedUserRepository.findByUsername("existingUser")).thenReturn(Optional.of(new User()));
+        when(mockUserRepository.findByUsername("existingUser")).thenReturn(Optional.of(new User()));
 
         assertThrows(IllegalArgumentException.class, ()->{
             userService.createUser("existingUser", "password");
         });
 
-        verify(mockedUserRepository,times(0)).save(any(User.class));
+        verify(mockUserRepository,times(0)).save(any(User.class));
     }
 }

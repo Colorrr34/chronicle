@@ -26,9 +26,8 @@ public class UserService {
         User user = new User();
         user.setUsername(username);
         user.setHashedPassword(hashedPassword);
-        User dbUser = userRepository.save(user);
-
-        return dbUser;
+        
+        return userRepository.save(user);
     }
 
     public Optional<User> findUserByUsername(String username){
