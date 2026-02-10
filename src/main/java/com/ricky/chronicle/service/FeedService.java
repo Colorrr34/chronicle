@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.ricky.chronicle.dto.feed.CreateFeedRequest;
+import com.ricky.chronicle.dto.feed.FeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Topic;
 import com.ricky.chronicle.repository.FeedRepository;
@@ -19,7 +21,9 @@ public class FeedService {
         this.topicRepository = topicRepository;
     }
 
-    public Feed createFeed(String title, String topicString){
+    public FeedResponse createFeed(CreateFeedRequest request){
+        String title = request.title();
+        String topicString = request.topicString();
         if (feedRepository.findByTitle(title).isPresent()){
             throw new IllegalArgumentException("title already exists");
         }
@@ -37,7 +41,14 @@ public class FeedService {
         feed.setTitle(title);
         feed.setTopic(dbTopic);
 
-        return feedRepository.save(feed);
+        Feed savedFeed = feedRepository.save(feed);
+        return new FeedResponse(
+            savedFeed.getId(),
+            savedFeed.getTitle(), 
+            savedFeed.getTopic().getTopic(), 
+            savedFeed.getCreatedAt(), 
+            savedFeed.getUpdatedAt()
+        );
     }
 
     public Optional<Feed> FindFeedByTitle(String title){

@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ricky.chronicle.dto.feed.CreateFeedRequest;
+import com.ricky.chronicle.dto.feed.FeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Topic;
 import com.ricky.chronicle.repository.FeedRepository;
@@ -46,7 +48,7 @@ public class FeedServiceTest {
         when(mockTopicRepository.findByTopic(topicString)).thenReturn(Optional.of(mockTopic));
         when(mockFeedRepository.save(any(Feed.class))).thenReturn(mockFeed);
 
-        Feed mockServiceFeed = feedService.createFeed(title, topicString);
+        FeedResponse feedResponse = feedService.createFeed(new CreateFeedRequest(title, topicString));
 
         verify(mockFeedRepository,times(1)).save(argThat(
             feed->
@@ -54,9 +56,9 @@ public class FeedServiceTest {
             feed.getTopic().equals(mockTopic)
         ));
 
-        assertThat(mockServiceFeed).isNotNull();
-        assertThat(mockServiceFeed.getTopic().getTopic()).isEqualTo(topicString);
-        assertThat(mockServiceFeed.getTitle()).isEqualTo(title);
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.topic()).isEqualTo(topicString);
+        assertThat(feedResponse.title()).isEqualTo(title);
     }
 
     @Test
@@ -73,7 +75,7 @@ public class FeedServiceTest {
         when(mockTopicRepository.save(any(Topic.class))).thenReturn(mockTopic);
         when(mockFeedRepository.save(any(Feed.class))).thenReturn(mockFeed);
 
-        Feed mockServiceFeed = feedService.createFeed(title, topicString);
+        FeedResponse feedResponse = feedService.createFeed(new CreateFeedRequest(title, topicString));
 
         verify(mockTopicRepository,times(1)).findByTopic(topicString);
         verify(mockTopicRepository,times(1)).save(argThat(
@@ -86,9 +88,9 @@ public class FeedServiceTest {
             feed.getTitle().equals(title)
         ));
 
-        assertThat(mockServiceFeed).isEqualTo(mockFeed);
-        assertThat(mockServiceFeed.getTopic().getTopic()).isEqualTo(topicString);
-        assertThat(mockServiceFeed.getTitle()).isEqualTo(title);
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.topic()).isEqualTo(topicString);
+        assertThat(feedResponse.title()).isEqualTo(title);
     }
 
     @Test
@@ -96,7 +98,7 @@ public class FeedServiceTest {
         when(mockFeedRepository.findByTitle("existing title")).thenReturn(Optional.of(new Feed()));
 
         assertThrows(IllegalArgumentException.class, ()->{
-            feedService.createFeed("existing title", "topic");
+            feedService.createFeed(new CreateFeedRequest("existing title", "topic"));
         });
 
         verify(mockFeedRepository,times(0)).save(any(Feed.class));
