@@ -25,9 +25,11 @@ CREATE TABLE posts(
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
     published_at TIMESTAMP,
-    url TEXT NOT NULL UNIQUE,
-    feed_id UUID NOT NULL REFERENCES feeds(id) ON DELETE CASCADE
+    url TEXT NOT NULL,
+    feed_id UUID NOT NULL REFERENCES feeds(id) ON DELETE CASCADE,
+    UNIQUE (url,feed_id)
 );
 
 CREATE TABLE users_feeds(

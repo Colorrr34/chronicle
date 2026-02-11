@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "posts",
+    uniqueConstraints = @UniqueConstraint(
+        name = "uk_feed_id_post_url",
+        columnNames = {"feed_id","url"}
+    )
+)
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -46,9 +52,13 @@ public class Post {
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
+    @CreationTimestamp
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -17,13 +17,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ricky.chronicle.entity.Feed;
-import com.ricky.chronicle.entity.Topic;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.entity.UserFeed;
 import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.UserFeedRepository;
 import com.ricky.chronicle.repository.UserRepository;
 import com.ricky.chronicle.service.UserFeedService;
+import com.ricky.chronicle.util.FeedBuilder;
+import com.ricky.chronicle.util.UserBuilder;
+import com.ricky.chronicle.util.UserFeedBuilder;
 
 @ExtendWith(MockitoExtension.class)
 public class UserFeedServiceTest {
@@ -42,20 +44,10 @@ public class UserFeedServiceTest {
     @Test
     void createUserFeed_shouldCreateUserFeed(){
         String username = "username";
-        String hashedPassword = "hashed_password123";
         String feedTitle = "feed title";
-        String feedTopic = "topic";
-        User mockUser = new User();      
-        mockUser.setUsername(username);
-        mockUser.setHashedPassword(hashedPassword);
-        Topic mockTopic = new Topic();
-        mockTopic.setTopic(feedTopic);
-        Feed mockFeed = new Feed();
-        mockFeed.setTitle(feedTitle);
-        mockFeed.setTopic(mockTopic);
-        UserFeed mockUserFeed = new UserFeed();
-        mockUserFeed.setUser(mockUser);
-        mockUserFeed.setFeed(mockFeed);
+        User mockUser = new UserBuilder().withUsername(username).build(); 
+        Feed mockFeed = new FeedBuilder().withTitle(feedTitle).build();
+        UserFeed mockUserFeed = new UserFeedBuilder(mockUser, mockFeed).build();
         
         when(mockUserRepository.findByUsername(username)).thenReturn(Optional.of(mockUser));
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));

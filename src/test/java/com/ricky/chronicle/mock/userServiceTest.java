@@ -22,6 +22,7 @@ import com.ricky.chronicle.dto.user.UserResponse;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.repository.UserRepository;
 import com.ricky.chronicle.service.UserService;
+import com.ricky.chronicle.util.UserBuilder;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -40,9 +41,7 @@ public class UserServiceTest {
         String rawPassword = "test_password123";
         CreateUserRequest request = new CreateUserRequest(username,rawPassword);
         String hashedPassword = "hashedPassword";
-        User mockUser = new User();
-        mockUser.setUsername(username);
-        mockUser.setHashedPassword(hashedPassword);
+        User mockUser = new UserBuilder().withUsernameAndHashedPassword(username, hashedPassword).build();
         
         when(mockAuthService.hashPassword(rawPassword)).thenReturn(hashedPassword);
         when(mockUserRepository.findByUsername(username)).thenReturn(Optional.empty());

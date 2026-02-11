@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ricky.chronicle.dto.post.CreatePostRequest;
+import com.ricky.chronicle.dto.post.PostResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Post;
 import com.ricky.chronicle.entity.User;
@@ -25,6 +28,10 @@ import com.ricky.chronicle.repository.PostRepository;
 import com.ricky.chronicle.repository.UserPostRepository;
 import com.ricky.chronicle.repository.UserRepository;
 import com.ricky.chronicle.service.PostService;
+import com.ricky.chronicle.util.FeedBuilder;
+import com.ricky.chronicle.util.PostBuilder;
+import com.ricky.chronicle.util.UserBuilder;
+import com.ricky.chronicle.util.UserPostBuilder;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
@@ -45,33 +52,27 @@ public class PostServiceTest {
 
     @Test
     void createPost_shouldCreatePostAndUserFeed_whenFeedAndUserExists(){
+        UUID userId = UUID.randomUUID();
         String username = "username";
         String feedTitle = "feed";
         String postTitle = "post_title";
-        String postDescription = "test description";
+        String postDescription = "post description";
         String postUrl = "www.post.com";
         LocalDateTime publishedAt = LocalDateTime.now();
-        User mockUser = new User();
-        mockUser.setUsername(username);
-        Feed mockFeed = new Feed();
-        mockFeed.setTitle(feedTitle);
-        Post mockPost = new Post();
-        mockPost.setTitle(postTitle);
-        mockPost.setDescription(postDescription);
-        mockPost.setUrl(postUrl);
-        mockPost.setFeed(mockFeed);
-        UserPost mockUserPost = new UserPost();
-        mockUserPost.setUser(mockUser);
-        mockUserPost.setPost(mockPost);
+        User mockUser = new UserBuilder().withUsername(username).build();
+        Feed mockFeed = new FeedBuilder().withTitle(feedTitle).build();
+        Post mockPost = new PostBuilder().withTitleFeedUrl(postTitle, feedTitle, postUrl).build();
+        UserPost mockUserPost = new UserPostBuilder(mockUser, mockPost).build();
 
-        when(mockUserRepository.findByUsername(username)).thenReturn(Optional.of(mockUser));
+
+        when(mockUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));
         when(mockPostRepository.save(any(Post.class))).thenReturn(mockPost);
         when(mockUserPostRepository.save(any(UserPost.class))).thenReturn(mockUserPost);
 
-        Post mockServicePost = postService.createPost(username, feedTitle, postTitle, postDescription, postUrl, publishedAt);
+        PostResponse serviceResponse = postService.createPost(new CreatePostRequest(userId, feedTitle, postTitle, postDescription, postUrl, publishedAt));
 
-        verify(mockUserRepository, times(1)).findByUsername(username);
+        verify(mockUserRepository, times(1)).findById(userId);
         verify(mockFeedRepository,times(1)).findByTitle(feedTitle);
         verify(mockPostRepository,times(1)).save(argThat(
             post->
@@ -86,7 +87,9 @@ public class PostServiceTest {
             up.getPost().getUrl().equals(postUrl)
         ));
 
-        assertThat(mockServicePost).isNotNull();
-        assertThat(mockServicePost.getUrl()).isEqualTo(postUrl);
+        assertThat(serviceResponse).isNotNull();
+        assertThat(serviceResponse.url()).isEqualTo(postUrl);
     }
+
+
 }

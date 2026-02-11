@@ -1,9 +1,12 @@
 package com.ricky.chronicle.service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.ricky.chronicle.dto.post.CreatePostRequest;
+import com.ricky.chronicle.dto.post.PostResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Post;
 import com.ricky.chronicle.entity.User;
@@ -32,18 +35,17 @@ public class PostService {
         this.userPostRepository = userPostRepository;
     }
 
-    public Post createPost(
-        String username,
-        String feedTitle,
-        String postTitle,
-        String description,
-        String url,
-        LocalDateTime publishedAt
-    ){
-        User user = userRepository.findByUsername(username).get();
+    public PostResponse createPost(CreatePostRequest request){
+        UUID userId = request.userId();
+        String feedTitle = request.feedTitle();
+        String title = request.title();
+        String description = request.description();
+        String url = request.url();
+        LocalDateTime publishedAt = request.publishedAt();
+        User user = userRepository.findById(userId).get();
         Feed feed = feedRepository.findByTitle(feedTitle).get();
         Post post = new Post();
-        post.setTitle(postTitle);
+        post.setTitle(title);
         post.setFeed(feed);
         post.setDescription(description);
         post.setUrl(url);
@@ -53,7 +55,17 @@ public class PostService {
         userPost.setUser(user);
         userPost.setPost(savedPost);
 
-        userPostRepository.save(userPost);
-        return savedPost;
+        UserPost savedUserPost = userPostRepository.save(userPost);
+        return new PostResponse(
+            savedPost.getId(), 
+            savedUserPost.getUser().getId(), 
+            savedPost.getFeed().getTitle(), 
+            savedPost.getTitle(), 
+            savedPost.getDescription(), 
+            savedPost.getUrl(), 
+            savedPost.getCreatedAt(), 
+            savedPost.getUpdatedAt(),
+            savedPost.getPublishedAt(),
+            savedUserPost.getId());
     }
 }

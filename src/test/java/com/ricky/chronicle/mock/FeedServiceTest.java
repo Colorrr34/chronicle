@@ -23,6 +23,8 @@ import com.ricky.chronicle.entity.Topic;
 import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.TopicRepository;
 import com.ricky.chronicle.service.FeedService;
+import com.ricky.chronicle.util.FeedBuilder;
+import com.ricky.chronicle.util.TopicBuilder;
 
 @ExtendWith(MockitoExtension.class)
 public class FeedServiceTest {
@@ -39,11 +41,8 @@ public class FeedServiceTest {
     void createFeed_shouldCreateFeedWithTopic_whenTopicExists(){
         String topicString = "test topic";
         String title = "test title";
-        Feed mockFeed = new Feed();
-        Topic mockTopic = new Topic();
-        mockTopic.setTopic(topicString);
-        mockFeed.setTopic(mockTopic);
-        mockFeed.setTitle(title);
+        Topic mockTopic = new TopicBuilder().withTopic(topicString).build();
+        Feed mockFeed = new FeedBuilder().withTitleAndTopic(title, topicString).build();
 
         when(mockTopicRepository.findByTopic(topicString)).thenReturn(Optional.of(mockTopic));
         when(mockFeedRepository.save(any(Feed.class))).thenReturn(mockFeed);
@@ -65,11 +64,8 @@ public class FeedServiceTest {
     public void createFeed_shouldCreateTopic_whenTopicIsEmpty(){
         String topicString = "not exist";
         String title = "test title";
-        Topic mockTopic = new Topic();
-        Feed mockFeed = new Feed();
-        mockTopic.setTopic(topicString);
-        mockFeed.setTitle(title);
-        mockFeed.setTopic(mockTopic);
+        Topic mockTopic = new TopicBuilder().withTopic(topicString).build();
+        Feed mockFeed = new FeedBuilder().withTitleAndTopic(title, topicString).build();
 
         when(mockTopicRepository.findByTopic(topicString)).thenReturn(Optional.empty());
         when(mockTopicRepository.save(any(Topic.class))).thenReturn(mockTopic);
