@@ -1,8 +1,10 @@
 package com.ricky.chronicle.mock;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -64,9 +66,9 @@ public class PostServiceTest {
         Post mockPost = new PostBuilder().withTitleFeedUrl(postTitle, feedTitle, postUrl).build();
         UserPost mockUserPost = new UserPostBuilder(mockUser, mockPost).build();
 
-
         when(mockUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));
+        when(mockPostRepository.findByFeedAndUrl(mockFeed, postUrl)).thenReturn(Optional.empty());
         when(mockPostRepository.save(any(Post.class))).thenReturn(mockPost);
         when(mockUserPostRepository.save(any(UserPost.class))).thenReturn(mockUserPost);
 
@@ -74,6 +76,9 @@ public class PostServiceTest {
 
         verify(mockUserRepository, times(1)).findById(userId);
         verify(mockFeedRepository,times(1)).findByTitle(feedTitle);
+        verify(mockPostRepository,times(1)).findByFeedAndUrl(
+            eq(mockFeed),eq(postUrl)
+        );
         verify(mockPostRepository,times(1)).save(argThat(
             post->
             post.getDescription().equals(postDescription)&&
@@ -91,5 +96,68 @@ public class PostServiceTest {
         assertThat(serviceResponse.url()).isEqualTo(postUrl);
     }
 
+    @Test
+    void createPost_shouldCreateOnlyUserPost_whenPostExists(){
+        UUID userId = UUID.randomUUID();
+        String username = "username";
+        String feedTitle = "exist feed";
+        String postTitle = "post_title";
+        String postDescription = "post description";
+        String postUrl = "www.exist.com";
+        LocalDateTime publishedAt = LocalDateTime.now();
 
+        User mockUser = new UserBuilder().withUsername(username).build();
+        Feed mockFeed = new FeedBuilder().withTitle(postTitle).build();
+        Post mockPost = new PostBuilder().withTitleFeedUrl(postTitle, feedTitle, postUrl).build();
+        UserPost mockUserPost = new UserPostBuilder(mockUser, mockPost).build();
+
+        when(mockUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+        when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));
+        when(mockPostRepository.findByFeedAndUrl(mockFeed, postUrl)).thenReturn(Optional.of(mockPost));
+        when(mockUserPostRepository.save(any(UserPost.class))).thenReturn(mockUserPost);
+
+        PostResponse serviceResponse = postService.createPost(new CreatePostRequest(userId, feedTitle, postTitle, postDescription, postUrl, publishedAt));
+
+        verify(mockUserRepository, times(1)).findById(userId);
+        verify(mockFeedRepository,times(1)).findByTitle(feedTitle);
+        verify(mockPostRepository,times(1)).findByFeedAndUrl(eq(mockFeed), eq(postUrl));
+        verify(mockPostRepository,times(0)).save(any(Post.class));
+        verify(mockUserPostRepository,times(1)).save(argThat(
+            up->
+            up.getUser().getUsername().equals(username)&&
+            up.getPost().getUrl().equals(postUrl)
+        ));
+
+        assertThat(serviceResponse).isNotNull();
+        assertThat(serviceResponse.url()).isEqualTo(postUrl);
+    }
+
+    @Test
+    void createPost_shouldThrowException_whenUserDoesNotExists(){
+        UUID userId = UUID.randomUUID();
+
+        when(mockUserRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, ()->{
+            postService.createPost(new CreatePostRequest(userId, null, null, null, null, null));
+        });
+
+        verify(mockPostRepository,times(0)).save(any(Post.class));
+    } 
+
+    @Test
+    void createPost_shouldThrowException_whenFeedDoesNotExists(){
+        UUID userId = UUID.randomUUID();
+        User mockUser = new UserBuilder().build();
+        String feedTitle = "not exists";
+
+        when(mockUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+        when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class,()->{
+            postService.createPost(new CreatePostRequest(userId, feedTitle, feedTitle, null,null, null));
+        });
+
+        verify(mockPostRepository,times(0)).save(any(Post.class));
+    }
 }

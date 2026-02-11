@@ -11,6 +11,8 @@ import com.ricky.chronicle.entity.Post;
 
 import java.util.List;
 import java.util.Optional;
+import com.ricky.chronicle.entity.Feed;
+
 
 
 @Repository
@@ -18,6 +20,8 @@ public interface PostRepository extends JpaRepository<Post,UUID>{
     Optional<Post> findByTitle(String title);
 
     Optional<Post> findByUrl(String url);
+
+    Optional<Post> findByFeedAndUrl(Feed feed, String url);
 
     @Query("""
             SELECT p FROM Post p

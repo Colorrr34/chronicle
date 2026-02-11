@@ -1,9 +1,12 @@
 package com.ricky.chronicle.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.ricky.chronicle.dto.userFeed.CreateUserFeedRequest;
+import com.ricky.chronicle.dto.userFeed.UserFeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.entity.UserFeed;
@@ -27,8 +30,10 @@ public class UserFeedService {
         this.feedRepository = feedRepository;
     }
 
-    public UserFeed createUserFeed(String username, String feedTitle){
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+    public UserFeedResponse createUserFeed(CreateUserFeedRequest request){
+        UUID userId = request.userId();
+        String feedTitle = request.feedTitle();
+        Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()){
             throw new IllegalArgumentException("user not found");
         }
@@ -42,6 +47,12 @@ public class UserFeedService {
         userFeed.setUser(user);
         userFeed.setFeed(feed);
 
-        return userFeedRepository.save(userFeed);
+        UserFeed responseUserFeed = userFeedRepository.save(userFeed);
+        return new UserFeedResponse(
+            responseUserFeed.getId(), 
+            responseUserFeed.getUser().getId(), 
+            responseUserFeed.getFeed().getId(), 
+            responseUserFeed.getFeed().getTitle()
+        );
     }
 }

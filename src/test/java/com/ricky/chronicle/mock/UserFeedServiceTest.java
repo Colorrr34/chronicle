@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ricky.chronicle.dto.userFeed.CreateUserFeedRequest;
+import com.ricky.chronicle.dto.userFeed.UserFeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.entity.UserFeed;
@@ -43,40 +46,37 @@ public class UserFeedServiceTest {
 
     @Test
     void createUserFeed_shouldCreateUserFeed(){
-        String username = "username";
+        UUID userId = UUID.randomUUID();
         String feedTitle = "feed title";
-        User mockUser = new UserBuilder().withUsername(username).build(); 
+        User mockUser = new UserBuilder().build(); 
         Feed mockFeed = new FeedBuilder().withTitle(feedTitle).build();
         UserFeed mockUserFeed = new UserFeedBuilder(mockUser, mockFeed).build();
         
-        when(mockUserRepository.findByUsername(username)).thenReturn(Optional.of(mockUser));
+        when(mockUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));
         when(mockUserFeedRepository.save(any(UserFeed.class))).thenReturn(mockUserFeed);
 
-        UserFeed mockServiceUserFeed = userFeedService.createUserFeed(username, feedTitle);
+        UserFeedResponse response = userFeedService.createUserFeed(new CreateUserFeedRequest(userId, feedTitle));
 
-        verify(mockUserRepository,times(1)).findByUsername(username);
+        verify(mockUserRepository,times(1)).findById(userId);
         verify(mockFeedRepository,times(1)).findByTitle(feedTitle);
         verify(mockUserFeedRepository,times(1)).save(argThat(
             uf->
-            uf.getUser().getUsername().equals(username)&&
             uf.getFeed().getTitle().equals(feedTitle)
         ));
 
-        assertThat(mockServiceUserFeed).isNotNull();
-        assertThat(mockServiceUserFeed.getUser().getUsername()).isEqualTo(username);
-        assertThat(mockServiceUserFeed.getFeed().getTitle()).isEqualTo(feedTitle);
+        assertThat(response).isNotNull();
     }
 
     @Test
     void createUserFeed_shouldThrowException_whenUserNotExists(){
-        String username = "existing_user";
+        UUID userId = UUID.randomUUID();
         String feedTitle = "feed title";
 
-        when(mockUserRepository.findByUsername(username)).thenReturn(Optional.empty());
+        when(mockUserRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, ()->{
-            userFeedService.createUserFeed(username, feedTitle);
+            userFeedService.createUserFeed(new CreateUserFeedRequest(userId, feedTitle));
         });
 
         verify(mockUserFeedRepository,times(0)).save(any(UserFeed.class));
@@ -84,14 +84,14 @@ public class UserFeedServiceTest {
 
     @Test
     void createUserFeed_shouldThrowException_whenFeedNotExists(){
-        String username = "username";
+        UUID userId = UUID.randomUUID();
         String feedTitle = "already exists";
 
-        when(mockUserRepository.findByUsername(username)).thenReturn(Optional.of(new User()));
+        when(mockUserRepository.findById(userId)).thenReturn(Optional.of(new User()));
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, ()->{
-            userFeedService.createUserFeed(username, feedTitle);
+            userFeedService.createUserFeed(new CreateUserFeedRequest(userId, feedTitle));
         });
 
         verify(mockUserFeedRepository,times(0)).save(any(UserFeed.class));

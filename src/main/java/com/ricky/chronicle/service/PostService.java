@@ -1,6 +1,7 @@
 package com.ricky.chronicle.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -42,30 +43,45 @@ public class PostService {
         String description = request.description();
         String url = request.url();
         LocalDateTime publishedAt = request.publishedAt();
-        User user = userRepository.findById(userId).get();
-        Feed feed = feedRepository.findByTitle(feedTitle).get();
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()){
+            throw new IllegalArgumentException("No such user");
+        }
+        User user = optionalUser.get();
+        Optional<Feed> optionalFeed = feedRepository.findByTitle(feedTitle);
+        if (optionalFeed.isEmpty()){
+            throw new IllegalArgumentException("No such user");
+        }
+        Feed feed = optionalFeed.get();
         Post post = new Post();
-        post.setTitle(title);
-        post.setFeed(feed);
-        post.setDescription(description);
-        post.setUrl(url);
-        post.setPublishedAt(publishedAt);
-        Post savedPost = postRepository.save(post);
+        Post dbPost;
+        Optional<Post> optionalPost = postRepository.findByFeedAndUrl(feed, url);
+        if(optionalPost.isEmpty()){
+            post.setTitle(title);
+            post.setFeed(feed);
+            post.setDescription(description);
+            post.setUrl(url);
+            post.setPublishedAt(publishedAt);
+            dbPost = postRepository.save(post);
+        }else{
+            dbPost = optionalPost.get();
+        } 
+        
         UserPost userPost = new UserPost();
         userPost.setUser(user);
-        userPost.setPost(savedPost);
+        userPost.setPost(dbPost);
 
         UserPost savedUserPost = userPostRepository.save(userPost);
         return new PostResponse(
-            savedPost.getId(), 
+            dbPost.getId(), 
             savedUserPost.getUser().getId(), 
-            savedPost.getFeed().getTitle(), 
-            savedPost.getTitle(), 
-            savedPost.getDescription(), 
-            savedPost.getUrl(), 
-            savedPost.getCreatedAt(), 
-            savedPost.getUpdatedAt(),
-            savedPost.getPublishedAt(),
+            dbPost.getFeed().getTitle(), 
+            dbPost.getTitle(), 
+            dbPost.getDescription(), 
+            dbPost.getUrl(), 
+            dbPost.getCreatedAt(), 
+            dbPost.getUpdatedAt(),
+            dbPost.getPublishedAt(),
             savedUserPost.getId());
     }
 }
