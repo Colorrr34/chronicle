@@ -1,350 +1,122 @@
 [
   {
-    "title": "Intro to JVM Memory",
-    "description": "Understanding heap vs. stack allocation.",
-    "feed_ref": "Java Performance Tuning",
-    "external_url": "http://example.com/posts/jvm-memory-guide"
+    "title": "JVM Memory Management 101",
+    "description": "A beginner's guide to the heap and stack.",
+    "feedRef": "Daily Tech Roundup",
+    "url": "http://example.com/posts/jvm-memory-101"
   },
   {
-    "title": "The Power of Spring Beans",
-    "description": "How dependency injection simplifies code.",
-    "feed_ref": "Spring Boot Secrets",
-    "external_url": "http://example.com/posts/spring-beans-deepdive"
+    "title": "The Ethics of AI in 2024",
+    "description": "Discussing bias, transparency, and responsibility in machine learning.",
+    "feedRef": "Daily Tech Roundup",
+    "url": "http://example.com/posts/ai-ethics-2024"
   },
   {
-    "title": "B-Tree Indexing Explained",
-    "description": "How B-Trees speed up SELECT queries.",
-    "feed_ref": "SQL Indexing Deep Dive",
-    "external_url": "http://example.com/posts/btree-indexing"
+    "title": "First Images from the James Webb Telescope's Latest Field",
+    "description": "Stunning new visuals of distant nebulae.",
+    "feedRef": "Quantum Leaps",
+    "url": "http://example.com/posts/jwst-new-images"
   },
   {
-    "title": "Choosing the Right RDBMS",
-    "description": "Comparing PostgreSQL features for scale.",
-    "feed_ref": "PostgreSQL vs MySQL",
-    "external_url": "http://example.com/posts/rdbms-comparison"
+    "title": "The Theory of Everything: Where Are We Now?",
+    "description": "An overview of string theory and loop quantum gravity.",
+    "feedRef": "Quantum Leaps",
+    "url": "http://example.com/posts/toe-status"
   },
   {
-    "title": "Containerizing with Docker",
-    "description": "Minimizing image size with multi-stage builds.",
-    "feed_ref": "Containerizing with Docker",
-    "external_url": "http://example.com/posts/docker-best-practices"
+    "title": "Cryptocurrency Regulation Landscape in the EU",
+    "description": "Analyzing the impact of MiCA on digital assets.",
+    "feedRef": "Market Watch Q1",
+    "url": "http://example.com/posts/mica-regulation"
   },
   {
-    "title": "Mastering AssertJ Fluent API",
-    "description": "Writing cleaner, more readable assertions.",
-    "feed_ref": "JUnit 5 Advanced",
-    "external_url": "http://example.com/posts/assertj-fluent-guide"
+    "title": "The 5 Best Performing S&P 500 Sectors YTD",
+    "description": "A deep dive into what's driving returns this quarter.",
+    "feedRef": "Market Watch Q1",
+    "url": "http://example.com/posts/sp500-sectors-ytd"
   },
   {
-    "title": "Using Mocks vs. Spies",
-    "description": "When to use each mocking tool in Mockito.",
-    "feed_ref": "Mocking with Mockito",
-    "external_url": "http://example.com/posts/mocks-vs-spies"
+    "title": "Off-Season Training Secrets of Elite Marathoners",
+    "description": "How the pros build their base endurance.",
+    "feedRef": "Weekend Game Recap",
+    "url": "http://example.com/posts/marathon-offseason"
   },
   {
-    "title": "Custom Hooks for Performance",
-    "description": "Optimizing component re-renders in React.",
-    "feed_ref": "React Hooks Performance",
-    "external_url": "http://example.com/posts/react-hooks-perf"
+    "title": "The Rise of Esports in Collegiate Athletics",
+    "description": "Universities are now offering scholarships for competitive gaming.",
+    "feedRef": "Weekend Game Recap",
+    "url": "http://example.com/posts/esports-collegiate"
   },
   {
-    "title": "Composition vs. Inheritance in Vue",
-    "description": "Deciding on the best state pattern.",
-    "feed_ref": "Vue 3 Composition API",
-    "external_url": "http://example.com/posts/vue-composition-vs-options"
+    "title": "Exploring the Influence of Minimalism on Contemporary Sculpture",
+    "description": "How 'less is more' translates to modern forms.",
+    "feedRef": "Modern Art Trends",
+    "url": "http://example.com/posts/minimalism-sculpture"
   },
   {
-    "title": "JVM Memory Leaks Debugging",
-    "description": "Using JProfiler to trace object retention.",
-    "feed_ref": "Java Performance Tuning",
-    "external_url": "http://example.com/posts/jvm-leak-debugging"
+    "title": "NFTs: Beyond the Hype Cycle",
+    "description": "Examining practical applications of tokenization in the art world.",
+    "feedRef": "Modern Art Trends",
+    "url": "http://example.com/posts/nfts-beyond-hype"
   },
   {
-    "title": "Event-Driven Architecture in Spring",
-    "description": "Implementing reliable messaging with RabbitMQ.",
-    "feed_ref": "Spring Boot Secrets",
-    "external_url": "http://example.com/posts/spring-event-driven"
+    "title": "Introduction to Containerization with Docker Swarm",
+    "description": "Setting up multi-container applications easily.",
+    "feedRef": "Daily Tech Roundup",
+    "url": "http://example.com/posts/docker-swarm-intro"
   },
   {
-    "title": "Optimizing Transaction Isolation Levels",
-    "description": "Understanding SERIALIZABLE vs READ COMMITTED.",
-    "feed_ref": "SQL Indexing Deep Dive",
-    "external_url": "http://example.com/posts/sql-isolation-levels"
+    "title": "The Next Frontier: Bio-Integrated Electronics",
+    "description": "Merging circuits with biological systems for new medical devices.",
+    "feedRef": "Quantum Leaps",
+    "url": "http://example.com/posts/bio-electronics"
   },
   {
-    "title": "Scaling with CockroachDB",
-    "description": "A look at distributed SQL.",
-    "feed_ref": "PostgreSQL vs MySQL",
-    "external_url": "http://example.com/posts/cockroachdb-scaling"
+    "title": "Understanding Quantitative Easing and Its Effects",
+    "description": "A macroeconomic look at central bank tools.",
+    "feedRef": "Market Watch Q1",
+    "url": "http://example.com/posts/qe-effects"
   },
   {
-    "title": "Immutable Images in CI/CD",
-    "description": "Ensuring deployment consistency.",
-    "feed_ref": "Containerizing with Docker",
-    "external_url": "http://example.com/posts/ci-cd-immutable-images"
+    "title": "The Psychology of Sports Fandom",
+    "description": "Why we attach so much emotional weight to our favorite teams.",
+    "feedRef": "Weekend Game Recap",
+    "url": "http://example.com/posts/sports-psychology"
   },
   {
-    "title": "Parameterized Tests in JUnit",
-    "description": "Running the same test logic with different inputs.",
-    "feed_ref": "JUnit 5 Advanced",
-    "external_url": "http://example.com/posts/junit-parameterized-tests"
+    "title": "A Retrospective on the Dada Movement",
+    "description": "Looking back at the anti-art movement that changed everything.",
+    "feedRef": "Modern Art Trends",
+    "url": "http://example.com/posts/dada-retrospective"
   },
   {
-    "title": "Capturing Arguments in Mockito",
-    "description": "Verifying exactly what was passed to a mock.",
-    "feed_ref": "Mocking with Mockito",
-    "external_url": "http://example.com/posts/mockito-argument-captor"
+    "title": "Serverless Architectures: Pros, Cons, and Best Practices",
+    "description": "When is AWS Lambda truly the right choice?",
+    "feedRef": "Daily Tech Roundup",
+    "url": "http://example.com/posts/serverless-best-practices"
   },
   {
-    "title": "Memoization with useCallback",
-    "description": "Preventing unnecessary re-renders of functions.",
-    "feed_ref": "React Hooks Performance",
-    "external_url": "http://example.com/posts/react-usecallback-guide"
+    "title": "Progress in Fusion Energy: What's on the Horizon?",
+    "description": "Updates from ITER and private sector labs.",
+    "feedRef": "Quantum Leaps",
+    "url": "http://example.com/posts/fusion-energy-update"
   },
   {
-    "title": "Reactivity in Vue 3",
-    "description": "How the new reactivity system works under the hood.",
-    "feed_ref": "Vue 3 Composition API",
-    "external_url": "http://example.com/posts/vue3-reactivity"
+    "title": "Value Investing in a High-Inflation Environment",
+    "description": "Adapting classic strategies for today's economic climate.",
+    "feedRef": "Market Watch Q1",
+    "url": "http://example.com/posts/value-investing-inflation"
   },
   {
-    "title": "Garbage Collection Tuning",
-    "description": "Configuring G1GC for a high-throughput service.",
-    "feed_ref": "Java Performance Tuning",
-    "external_url": "http://example.com/posts/g1gc-tuning"
+    "title": "Tactical Formations in Modern Football (Soccer)",
+    "description": "Analyzing the 4-3-3 vs. the 3-4-3.",
+    "feedRef": "Weekend Game Recap",
+    "url": "http://example.com/posts/football-formations"
   },
   {
-    "title": "Spring Security OAuth2 Setup",
-    "description": "Configuring external authentication providers.",
-    "feed_ref": "Spring Boot Secrets",
-    "external_url": "http://example.com/posts/spring-oauth2-setup"
-  },
-  {
-    "title": "Handling Deadlocks in Transactions",
-    "description": "Strategies for rollback and retry logic.",
-    "feed_ref": "SQL Indexing Deep Dive",
-    "external_url": "http://example.com/posts/sql-deadlocks-strategies"
-  },
-  {
-    "title": "Security Groups and Firewalls in AWS",
-    "description": "Locking down your VPC resources.",
-    "feed_ref": "Cloud Infrastructure",
-    "external_url": "http://example.com/posts/aws-security-groups"
-  },
-  {
-    "title": "Implementing Smoke Tests",
-    "description": "Quick checks for service availability on deployment.",
-    "feed_ref": "Testing Strategies",
-    "external_url": "http://example.com/posts/ci-smoke-tests"
-  },
-  {
-    "title": "Server Components vs. Client Components",
-    "description": "Understanding the shift in modern React.",
-    "feed_ref": "React Hooks Performance",
-    "external_url": "http://example.com/posts/react-server-components"
-  },
-  {
-    "title": "Pinia State Management in Vue",
-    "description": "The modern standard for Vue state.",
-    "feed_ref": "Vue 3 Composition API",
-    "external_url": "http://example.com/posts/vue-pinia-guide"
-  },
-  {
-    "title": "Analyzing Thread Dumps",
-    "description": "Using VisualVM to diagnose slow performance.",
-    "feed_ref": "Java Performance Tuning",
-    "external_url": "http://example.com/posts/thread-dump-analysis"
-  },
-  {
-    "title": "Customizing Spring Boot Actuator Endpoints",
-    "description": "Exposing internal metrics securely.",
-    "feed_ref": "Spring Boot Secrets",
-    "external_url": "http://example.com/posts/spring-actuator-custom"
-  },
-  {
-    "title": "When to Denormalize Data",
-    "description": "Trade-offs between query speed and data redundancy.",
-    "feed_ref": "PostgreSQL vs MySQL",
-    "external_url": "http://example.com/posts/nosql-denormalization"
-  },
-  {
-    "title": "Managing IAM Roles in Terraform",
-    "description": "Defining cloud permissions programmatically.",
-    "feed_ref": "Cloud Infrastructure",
-    "external_url": "http://example.com/posts/terraform-iam-roles"
-  },
-  {
-    "title": "End-to-End Testing with Cypress",
-    "description": "Simulating full user flows in E2E.",
-    "feed_ref": "Testing Strategies",
-    "external_url": "http://example.com/posts/cypress-e2e-guide"
-  },
-  {
-    "title": "Optimizing Image Loading",
-    "description": "Using WebP and lazy loading.",
-    "feed_ref": "React Hooks Performance",
-    "external_url": "http://example.com/posts/image-optimization-web"
-  },
-  {
-    "title": "Vue Transitions and Animations",
-    "description": "Creating smooth UI updates.",
-    "feed_ref": "Vue 3 Composition API",
-    "external_url": "http://example.com/posts/vue-transitions"
-  },
-  {
-    "title": "Profiling with Async-Await Overhead",
-    "description": "Understanding the cost of asynchronous operations.",
-    "feed_ref": "Java Performance Tuning",
-    "external_url": "http://example.com/posts/async-await-cost"
-  },
-  {
-    "title": "Service Discovery with Eureka/Consul",
-    "description": "How services find each other in a cluster.",
-    "feed_ref": "Spring Boot Secrets",
-    "external_url": "http://example.com/posts/spring-service-discovery"
-  },
-  {
-    "title": "Data Migration Strategies",
-    "description": "Blue/Green deployments for the database.",
-    "feed_ref": "SQL Indexing Deep Dive",
-    "external_url": "http://example.com/posts/db-migration-bluegreen"
-  },
-  {
-    "title": "Security Groups and Firewalls in AWS",
-    "description": "Locking down your VPC resources.",
-    "feed_ref": "Cloud Infrastructure",
-    "external_url": "http://example.com/posts/aws-firewall-guide"
-  },
-  {
-    "title": "Fuzz Testing for Input Validation",
-    "description": "Automatically generating unexpected input.",
-    "feed_ref": "Testing Strategies",
-    "external_url": "http://example.com/posts/fuzz-testing-inputs"
-  },
-  {
-    "title": "State Management Libraries Comparison",
-    "description": "Redux vs. Zustand vs. Context API.",
-    "feed_ref": "React Hooks Performance",
-    "external_url": "http://example.com/posts/react-state-comparison"
-  },
-  {
-    "title": "Pinia State Management in Vue",
-    "description": "The modern standard for Vue state.",
-    "feed_ref": "Vue 3 Composition API",
-    "external_url": "http://example.com/posts/vue-pinia-state"
-  },
-  {
-    "title": "Profiling Memory Leaks in Threads",
-    "description": "Advanced garbage collection analysis.",
-    "feed_ref": "Java Performance Tuning",
-    "external_url": "http://example.com/posts/java-thread-memory-leaks"
-  },
-  {
-    "title": "Implementing Circuit Breakers",
-    "description": "Preventing cascading failures in microservices.",
-    "feed_ref": "Spring Boot Secrets",
-    "external_url": "http://example.com/posts/spring-circuit-breaker"
-  },
-  {
-    "title": "When to Denormalize Data",
-    "description": "Trade-offs between query speed and data redundancy.",
-    "feed_ref": "PostgreSQL vs MySQL",
-    "external_url": "http://example.com/posts/nosql-denormalization"
-  },
-  {
-    "title": "Managing IAM Roles in Terraform",
-    "description": "Defining cloud permissions programmatically.",
-    "feed_ref": "Cloud Infrastructure",
-    "external_url": "http://example.com/posts/terraform-iam-roles-setup"
-  },
-  {
-    "title": "End-to-End Testing with Cypress",
-    "description": "Simulating full user flows in E2E.",
-    "feed_ref": "Testing Strategies",
-    "external_url": "http://example.com/posts/cypress-e2e-guide"
-  },
-  {
-    "title": "Optimizing Image Loading",
-    "description": "Using WebP and lazy loading.",
-    "feed_ref": "React Hooks Performance",
-    "external_url": "http://example.com/posts/image-optimization-web"
-  },
-  {
-    "title": "Vue Teleport for Modals",
-    "description": "Using Teleport to break out of the component tree.",
-    "feed_ref": "Vue 3 Composition API",
-    "external_url": "http://example.com/posts/vue-teleport-modals"
-  },
-  {
-    "title": "Profiling with Async-Await Overhead",
-    "description": "Understanding the cost of asynchronous operations.",
-    "feed_ref": "Java Performance Tuning",
-    "external_url": "http://example.com/posts/async-await-cost-analysis"
-  },
-  {
-    "title": "Service Discovery with Eureka/Consul",
-    "description": "How services find each other in a cluster.",
-    "feed_ref": "Spring Boot Secrets",
-    "external_url": "http://example.com/posts/spring-service-discovery-guide"
-  },
-  {
-    "title": "Data Migration Strategies",
-    "description": "Blue/Green deployments for the database.",
-    "feed_ref": "SQL Indexing Deep Dive",
-    "external_url": "http://example.com/posts/db-migration-bluegreen"
-  },
-  {
-    "title": "Security Groups and Firewalls in AWS",
-    "description": "Locking down your VPC resources.",
-    "feed_ref": "Cloud Infrastructure",
-    "external_url": "http://example.com/posts/aws-firewall-guide-new"
-  },
-  {
-    "title": "Fuzz Testing for Input Validation",
-    "description": "Automatically generating unexpected input.",
-    "feed_ref": "Testing Strategies",
-    "external_url": "http://example.com/posts/fuzz-testing-advanced"
-  },
-  {
-    "title": "State Management Libraries Comparison",
-    "description": "Redux vs. Zustand vs. Context API.",
-    "feed_ref": "React Hooks Performance",
-    "external_url": "http://example.com/posts/react-state-comparison-2024"
-  },
-  {
-    "title": "Pinia State Management in Vue",
-    "description": "The modern standard for Vue state.",
-    "feed_ref": "Vue 3 Composition API",
-    "external_url": "http://example.com/posts/vue-pinia-setup"
-  },
-  {
-    "title": "Analyzing Thread Dumps",
-    "description": "Advanced garbage collection analysis.",
-    "feed_ref": "Java Performance Tuning",
-    "external_url": "http://example.com/posts/java-thread-dump-deepdive"
-  },
-  {
-    "title": "Implementing Circuit Breakers",
-    "description": "Preventing cascading failures in microservices.",
-    "feed_ref": "Spring Boot Secrets",
-    "external_url": "http://example.com/posts/spring-circuit-breaker-resilience"
-  },
-  {
-    "title": "When to Denormalize Data",
-    "description": "Trade-offs between query speed and data redundancy.",
-    "feed_ref": "PostgreSQL vs MySQL",
-    "external_url": "http://example.com/posts/nosql-denormalization-tradeoffs"
-  },
-  {
-    "title": "Managing IAM Roles in Terraform",
-    "description": "Defining cloud permissions programmatically.",
-    "feed_ref": "Cloud Infrastructure",
-    "external_url": "http://example.com/posts/terraform-iam-roles-new"
-  },
-  {
-    "title": "End-to-End Testing with Cypress",
-    "description": "Simulating full user flows in E2E.",
-    "feed_ref": "Testing Strategies",
-    "external_url": "http://example.com/posts/cypress-e2e-guide-v2"
+    "title": "The Digital Canvas: Tools for the Modern Illustrator",
+    "description": "Comparing Procreate, Photoshop, and Clip Studio Paint.",
+    "feedRef": "Modern Art Trends",
+    "url": "http://example.com/posts/digital-canvas-tools"
   }
 ]

@@ -1,4 +1,4 @@
-package com.ricky.chronicle.mock;
+package com.ricky.chronicle.service_test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

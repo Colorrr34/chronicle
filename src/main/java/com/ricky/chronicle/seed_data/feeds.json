@@ -1,25 +1,13 @@
 [
-  { "title": "Daily Tech Roundup", "topic_ref": "Technology" },
-  { "title": "Quantum Leaps", "topic_ref": "Science" },
-  { "title": "Market Watch Q1", "topic_ref": "Finance" },
-  { "title": "Weekend Game Recap", "topic_ref": "Sports" },
-  { "title": "Modern Art Trends", "topic_ref": "Art" },
+  { "title": "Daily Tech Roundup", "topicRef": "Technology" },
+  { "title": "Quantum Leaps", "topicRef": "Science" },
+  { "title": "Market Watch Q1", "topicRef": "Finance" },
+  { "title": "Weekend Game Recap", "topicRef": "Sports" },
+  { "title": "Modern Art Trends", "topicRef": "Art" },
 
-  { "title": "AI Advancements", "topic_ref": "Technology" },
-  { "title": "Space Exploration News", "topic_ref": "Science" },
-  { "title": "Stock Market Analysis", "topic_ref": "Finance" },
-  { "title": "Local Team Scoreboard", "topic_ref": "Sports" },
-  { "title": "Digital Painting Tips", "topic_ref": "Art" },
-
-  { "title": "Gadget Reviews", "topic_ref": "Technology" },
-  { "title": "Biology Breakthroughs", "topic_ref": "Science" },
-  { "title": "Cryptocurrency Insights", "topic_ref": "Finance" },
-  { "title": "Athlete Interviews", "topic_ref": "Sports" },
-  { "title": "Sculpting Basics", "topic_ref": "Art" },
-
-  { "title": "Future of Computing", "topic_ref": "Technology" },
-  { "title": "Climate Change Data", "topic_ref": "Science" },
-  { "title": "Personal Finance 101", "topic_ref": "Finance" },
-  { "title": "Training Regimens", "topic_ref": "Sports" },
-  { "title": "Art History Corner", "topic_ref": "Art" }
+  { "title": "AI Advancements", "topicRef": "Technology" },
+  { "title": "Space Exploration News", "topicRef": "Science" },
+  { "title": "Stock Market Analysis", "topicRef": "Finance" },
+  { "title": "Local Team Scoreboard", "topicRef": "Sports" },
+  { "title": "Digital Painting Tips", "topicRef": "Art" }
 ]
