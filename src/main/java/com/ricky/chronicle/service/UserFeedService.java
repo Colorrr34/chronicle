@@ -14,21 +14,14 @@ import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.UserFeedRepository;
 import com.ricky.chronicle.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserFeedService {
     private final UserFeedRepository userFeedRepository;
     private final UserRepository userRepository;
     private final FeedRepository feedRepository;
-
-    public UserFeedService(
-        UserFeedRepository userFeedRepository,
-        UserRepository userRepository,
-        FeedRepository feedRepository
-    ){
-        this.userFeedRepository = userFeedRepository;
-        this.userRepository = userRepository;
-        this.feedRepository = feedRepository;
-    }
 
     public UserFeedResponse createUserFeed(CreateUserFeedRequest request){
         UUID userId = request.userId();

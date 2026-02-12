@@ -29,8 +29,11 @@ import com.ricky.chronicle.seeding.seedingMap.PostMap;
 import com.ricky.chronicle.seeding.seedingMap.TopicMap;
 import com.ricky.chronicle.seeding.seedingMap.UserMap;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
 @Profile("!test")
+@RequiredArgsConstructor
 public class Seeder implements CommandLineRunner {
     private final AuthService authService;
     private final UserRepository userRepository;
@@ -40,23 +43,6 @@ public class Seeder implements CommandLineRunner {
     private final UserFeedRepository userFeedRepository;
     private final UserPostRepository userPostRepository;
 
-    public Seeder(
-        AuthService authService,
-        UserRepository userRepository,
-        TopicRepository topicRepository,
-        FeedRepository feedRepository,
-        PostRepository postRepository,
-        UserFeedRepository userFeedRepository,
-        UserPostRepository userPostRepository
-    ){
-        this.authService = authService;
-        this.userRepository = userRepository;
-        this.topicRepository = topicRepository;
-        this.feedRepository = feedRepository;
-        this.postRepository = postRepository;
-        this.userFeedRepository = userFeedRepository;
-        this.userPostRepository = userPostRepository;
-    }
 
     private ObjectMapper objectMapper = new ObjectMapper();
 

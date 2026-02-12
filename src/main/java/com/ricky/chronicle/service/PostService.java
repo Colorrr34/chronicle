@@ -1,6 +1,8 @@
 package com.ricky.chronicle.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,24 +19,15 @@ import com.ricky.chronicle.repository.PostRepository;
 import com.ricky.chronicle.repository.UserPostRepository;
 import com.ricky.chronicle.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final FeedRepository feedRepository;
     private final UserPostRepository userPostRepository;
-
-    public PostService(
-        PostRepository postRepository,
-        UserRepository userRepository,
-        FeedRepository feedRepository,
-        UserPostRepository userPostRepository
-    ){
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-        this.feedRepository = feedRepository;
-        this.userPostRepository = userPostRepository;
-    }
 
     public PostResponse createPost(CreatePostRequest request){
         UUID userId = request.userId();
@@ -83,5 +76,21 @@ public class PostService {
             dbPost.getUpdatedAt(),
             dbPost.getPublishedAt(),
             savedUserPost.getId());
+    }
+
+    public List<Post> getAllPosts(){
+        return postRepository.findAll();
+    }
+
+    public Post getPostById(UUID id){
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isEmpty()){
+            throw new NoSuchElementException("Post not found");
+        }
+        return optionalPost.get();
+    }
+
+    public List<Post> getPostsByUserId(UUID userId){
+        return postRepository.findAllPostsByUserId(userId);
     }
 }

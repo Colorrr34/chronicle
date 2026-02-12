@@ -14,15 +14,13 @@ import com.ricky.chronicle.dto.user.UserResponse;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final AuthService authService;
-
-    public UserService(UserRepository userRepository, AuthService authService){
-        this.userRepository = userRepository;
-        this.authService = authService;
-    }
 
     protected UserResponse userMapper(User user){
         return new UserResponse(

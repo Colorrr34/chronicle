@@ -11,15 +11,13 @@ import com.ricky.chronicle.entity.Topic;
 import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.TopicRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class FeedService {
     private final FeedRepository feedRepository;
     private final TopicRepository topicRepository;
-
-    public FeedService(FeedRepository feedRepository, TopicRepository topicRepository){
-        this.feedRepository = feedRepository;
-        this.topicRepository = topicRepository;
-    }
 
     public FeedResponse createFeed(CreateFeedRequest request){
         String title = request.title();
