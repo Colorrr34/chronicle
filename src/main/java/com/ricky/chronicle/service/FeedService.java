@@ -1,11 +1,13 @@
 package com.ricky.chronicle.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import com.ricky.chronicle.dto.feed.CreateFeedRequest;
-import com.ricky.chronicle.dto.feed.FeedResponse;
+import com.ricky.chronicle.dto.feed.CreateFeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Topic;
 import com.ricky.chronicle.repository.FeedRepository;
@@ -19,7 +21,7 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final TopicRepository topicRepository;
 
-    public FeedResponse createFeed(CreateFeedRequest request){
+    public CreateFeedResponse createFeed(CreateFeedRequest request){
         String title = request.title();
         String topicString = request.topicString();
         if (feedRepository.findByTitle(title).isPresent()){
@@ -40,7 +42,7 @@ public class FeedService {
         feed.setTopic(dbTopic);
 
         Feed savedFeed = feedRepository.save(feed);
-        return new FeedResponse(
+        return new CreateFeedResponse(
             savedFeed.getId(),
             savedFeed.getTitle(), 
             savedFeed.getTopic().getTopic(), 
@@ -51,5 +53,13 @@ public class FeedService {
 
     public Optional<Feed> FindFeedByTitle(String title){
         return feedRepository.findByTitle(title);
+    }
+
+    public List<Feed> FindAllFeeds(){
+        return feedRepository.findAll();
+    }
+
+    public List<Feed> FindAllFeedsByUserId(UUID userId){
+        return feedRepository.findAllFeedsByUserId(userId);
     }
 }

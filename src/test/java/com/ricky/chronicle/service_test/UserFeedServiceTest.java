@@ -17,8 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ricky.chronicle.dto.userFeed.CreateUserFeedRequest;
-import com.ricky.chronicle.dto.userFeed.UserFeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.entity.UserFeed;
@@ -56,7 +54,7 @@ public class UserFeedServiceTest {
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));
         when(mockUserFeedRepository.save(any(UserFeed.class))).thenReturn(mockUserFeed);
 
-        UserFeedResponse response = userFeedService.createUserFeed(new CreateUserFeedRequest(userId, feedTitle));
+        UserFeed userFeed = userFeedService.createUserFeed(userId, feedTitle);
 
         verify(mockUserRepository,times(1)).findById(userId);
         verify(mockFeedRepository,times(1)).findByTitle(feedTitle);
@@ -65,7 +63,7 @@ public class UserFeedServiceTest {
             uf.getFeed().getTitle().equals(feedTitle)
         ));
 
-        assertThat(response).isNotNull();
+        assertThat(userFeed).isNotNull();
     }
 
     @Test
@@ -76,7 +74,7 @@ public class UserFeedServiceTest {
         when(mockUserRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, ()->{
-            userFeedService.createUserFeed(new CreateUserFeedRequest(userId, feedTitle));
+            userFeedService.createUserFeed(userId,feedTitle);
         });
 
         verify(mockUserFeedRepository,times(0)).save(any(UserFeed.class));
@@ -91,7 +89,7 @@ public class UserFeedServiceTest {
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, ()->{
-            userFeedService.createUserFeed(new CreateUserFeedRequest(userId, feedTitle));
+            userFeedService.createUserFeed(userId,feedTitle);
         });
 
         verify(mockUserFeedRepository,times(0)).save(any(UserFeed.class));

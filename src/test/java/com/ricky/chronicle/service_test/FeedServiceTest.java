@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ricky.chronicle.dto.feed.CreateFeedRequest;
-import com.ricky.chronicle.dto.feed.FeedResponse;
+import com.ricky.chronicle.dto.feed.CreateFeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Topic;
 import com.ricky.chronicle.repository.FeedRepository;
@@ -47,7 +47,7 @@ public class FeedServiceTest {
         when(mockTopicRepository.findByTopic(topicString)).thenReturn(Optional.of(mockTopic));
         when(mockFeedRepository.save(any(Feed.class))).thenReturn(mockFeed);
 
-        FeedResponse feedResponse = feedService.createFeed(new CreateFeedRequest(title, topicString));
+        CreateFeedResponse feedResponse = feedService.createFeed(new CreateFeedRequest(title, topicString));
 
         verify(mockFeedRepository,times(1)).save(argThat(
             feed->
@@ -71,7 +71,7 @@ public class FeedServiceTest {
         when(mockTopicRepository.save(any(Topic.class))).thenReturn(mockTopic);
         when(mockFeedRepository.save(any(Feed.class))).thenReturn(mockFeed);
 
-        FeedResponse feedResponse = feedService.createFeed(new CreateFeedRequest(title, topicString));
+        CreateFeedResponse feedResponse = feedService.createFeed(new CreateFeedRequest(title, topicString));
 
         verify(mockTopicRepository,times(1)).findByTopic(topicString);
         verify(mockTopicRepository,times(1)).save(argThat(

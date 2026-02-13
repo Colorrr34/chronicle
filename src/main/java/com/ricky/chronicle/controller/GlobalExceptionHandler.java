@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.ricky.chronicle.exception.InvalidArgumentException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
     
@@ -17,5 +19,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handlerNoSuchElement(NoSuchElementException ex){
         return ResponseEntity.status(404).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidArgumentException.class)
+    public ResponseEntity<String> handleInvalidArgumentException(InvalidArgumentException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }

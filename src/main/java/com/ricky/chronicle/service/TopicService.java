@@ -36,4 +36,10 @@ public class TopicService {
         }
         return optionalTopic.get();
     }
+
+    public Topic createTopic(String topicString){
+        Topic topic = new Topic();
+        topic.setTopic(topicString);
+        return topicRepository.save(topic);
+    }
 }

@@ -4,8 +4,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ricky.chronicle.dto.user.CreateUserRequest;
 import com.ricky.chronicle.dto.user.UserResponse;
+import com.ricky.chronicle.dto.userFeed.CreateUserFeedRequest;
+import com.ricky.chronicle.dto.userFeed.UserFeedResponse;
+import com.ricky.chronicle.entity.User;
+import com.ricky.chronicle.entity.UserFeed;
+import com.ricky.chronicle.map.UserFeedMapper;
+import com.ricky.chronicle.map.UserMapper;
+import com.ricky.chronicle.service.UserFeedService;
 import com.ricky.chronicle.service.UserService;
 
+import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,23 +29,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserFeedService userFeedService;
+    private final UserMapper userMapper;
+    private final UserFeedMapper userFeedMapper;
 
-    public UserController(UserService userService){
-        this.userService= userService;
-    }
-   
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> usersResponseList = userService.getAllUsers();
+        List<UserResponse> usersResponseList = new ArrayList<>();
+        List<User> users = userService.getAllUsers();
+        for (User user : users){
+            usersResponseList.add(userMapper.toResponse(user));
+        }
 
         return ResponseEntity.ok(usersResponseList);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable UUID userId) {
-        UserResponse userResponse = userService.getUserById(userId);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable UUID userId) {        
+        User user = userService.getUserById(userId);
+        UserResponse userResponse = userMapper.toResponse(user);
 
         return ResponseEntity.ok(userResponse);
     }
@@ -43,15 +58,22 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponse> postUser(@RequestBody CreateUserRequest request) {
-        if (request.username().isBlank()||request.rawPassword().isBlank()){
-            throw new IllegalArgumentException("missing body");
-        }
+        String username = request.username();
+        String rawPassword = request.rawPassword();
+        User user = userService.createUser(username,rawPassword);
 
-        UserResponse userResponse = userService.createUser(request);
-
+        UserResponse userResponse = userMapper.toResponse(user);
         
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
     
+    @PostMapping("/{userId}/feeds")
+    public ResponseEntity<UserFeedResponse> postUserFeed(@PathVariable UUID userId, @RequestBody CreateUserFeedRequest request){
+        String feedTitle = request.feedTitle();
+
+        UserFeed userFeed = userFeedService.createUserFeed(userId, feedTitle);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userFeedMapper.toResponse(userFeed));
+    }
 }
