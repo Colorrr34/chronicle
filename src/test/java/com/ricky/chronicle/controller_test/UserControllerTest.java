@@ -27,6 +27,7 @@ import com.ricky.chronicle.exception.InvalidArgumentException;
 import com.ricky.chronicle.map.UserFeedMapper;
 import com.ricky.chronicle.map.UserMapper;
 import com.ricky.chronicle.service.UserFeedService;
+import com.ricky.chronicle.service.UserPostService;
 import com.ricky.chronicle.service.UserService;
 
 @WebMvcTest(UserController.class)
@@ -45,6 +46,9 @@ public class UserControllerTest {
 
     @MockitoBean
     private UserFeedMapper mockFeedMapper;
+
+    @MockitoBean
+    private UserPostService mockUserPostService;
 
     @Test
     void getAllUsers_shouldReturn200AndListOfUsers() throws Exception{
