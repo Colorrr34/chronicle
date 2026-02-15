@@ -113,6 +113,12 @@
 			<version>3.0.4</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>2.0.0</version>
+				<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -141,6 +147,11 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+        		<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>2.0.0</version>
+				</plugin>
 		</plugins>
 	</build>
 
