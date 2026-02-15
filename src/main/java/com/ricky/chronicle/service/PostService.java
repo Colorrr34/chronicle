@@ -101,4 +101,14 @@ public class PostService {
     public List<Post> getPostsByUserId(UUID userId){
         return postRepository.findAllPostsByUserId(userId);
     }
+
+    public String deletePostById(UUID postId){
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if(optionalPost.isEmpty()){
+            throw new NoSuchElementException("post not found");
+        }
+
+        postRepository.delete(optionalPost.get());
+        return "post deleted";
+    }
 }

@@ -1,5 +1,6 @@
 package com.ricky.chronicle.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,7 +23,6 @@ public class UserFeedService {
     private final FeedRepository feedRepository;
 
     public UserFeed createUserFeed(UUID userId, String feedTitle){
-
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()){
             throw new IllegalArgumentException("user not found");
@@ -38,5 +38,20 @@ public class UserFeedService {
         userFeed.setFeed(feed);
 
         return userFeedRepository.save(userFeed);
+    }
+
+    public String deleteUserFeedByUserIdAndFeedId(UUID userId, UUID feedId){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        Optional<Feed> optionalFeed = feedRepository.findById(feedId);
+
+        if(optionalUser.isEmpty()){
+            throw new NoSuchElementException("user not found");
+        }
+        if(optionalFeed.isEmpty()){
+            throw new NoSuchElementException("feed not found");
+        }
+
+        userFeedRepository.deleteByUserAndFeed(optionalUser.get(), optionalFeed.get());
+        return "userFeed deleted";
     }
 }

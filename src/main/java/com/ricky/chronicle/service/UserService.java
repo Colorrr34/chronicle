@@ -51,4 +51,17 @@ public class UserService {
     public Optional<User> findUserByUsername(String username){
         return userRepository.findByUsername(username);
     }
+
+    public String deleteUser(UUID userId, String rawPassword){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()){
+            throw new NoSuchElementException("User does not exists");
+        }
+        User user = optionalUser.get();
+        if(!authService.verifyPassword(user.getHashedPassword(), rawPassword)){
+            throw new IllegalArgumentException("password does not match");
+        }
+        userRepository.delete(user);
+        return "User deleted";
+    }
 }

@@ -67,4 +67,11 @@ public class PostController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PostMapping("/{postId}")
+    public ResponseEntity<String> deletePost(@PathVariable UUID postId){
+        String message = postService.deletePostById(postId);
+
+        return ResponseEntity.ok(message);
+    }
 }

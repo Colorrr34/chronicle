@@ -1,6 +1,7 @@
 package com.ricky.chronicle.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -61,5 +62,15 @@ public class FeedService {
 
     public List<Feed> FindAllFeedsByUserId(UUID userId){
         return feedRepository.findAllFeedsByUserId(userId);
+    }
+
+    public String DeleteFeedById(UUID feedId){
+        Optional<Feed> optionalFeed = feedRepository.findById(feedId);
+        if(optionalFeed.isEmpty()){
+            throw new NoSuchElementException("feed not found ");
+        }
+
+        feedRepository.delete(optionalFeed.get());
+        return "feed deleted";
     }
 }

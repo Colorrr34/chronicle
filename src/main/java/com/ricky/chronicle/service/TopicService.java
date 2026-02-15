@@ -42,4 +42,13 @@ public class TopicService {
         topic.setTopic(topicString);
         return topicRepository.save(topic);
     }
+
+    public String deleteTopicByTopic(String topicString){
+        Optional<Topic> optionalTopic = topicRepository.findByTopic(topicString);
+        if (optionalTopic.isEmpty()){
+            throw new NoSuchElementException("topic not found");
+        }
+        topicRepository.delete(optionalTopic.get());
+        return "topic deleted";
+    }
 }
