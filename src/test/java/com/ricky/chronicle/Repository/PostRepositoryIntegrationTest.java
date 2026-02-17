@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +26,49 @@ public class PostRepositoryIntegrationTest extends IntegrationTest{
 
     @Test
     @Transactional
-    public void givenUserUsername_whenGetAllPosts_returnAllPostsByUser(){
+    public void givenUserUsername_whenGetAllPostsByUsername_returnAllPostsByUser(){
         List<User> dbUsers = userRepository.findAll();
         User user = dbUsers.getFirst();
         String username = user.getUsername();
 
         List<Post> posts = postRepository.findAllPostsByUserUsername(username);
 
-        Post firstPost = posts.stream().findFirst().orElseThrow();
+        posts.stream().findFirst().orElseThrow();
 
-        assertAll("check all posts for corresponding username", ()->{
-            firstPost.getPostsByUsers()
+        posts.stream().forEach(post->{
+            assertAll("check all posts for corresponding username", ()->{
+            post.getPostsByUsers()
                 .stream()
                 .filter(up->up.getUser().getUsername().equals(username))
                 .findFirst()
                 .orElseThrow(
                     ()->new NoSuchElementException("feed doesn't match the username")
                 );
+        });
+        });
+    }
+
+    @Test
+    @Transactional
+    public void givenUserId_whenGetAllPostsByUserId_returnAllPostsByUser(){
+        List<User> dbUsers = userRepository.findAll();
+        User user = dbUsers.getFirst();
+        UUID userId = user.getId();
+
+        List<Post> posts = postRepository.findAllPostsByUserId(userId);
+
+        posts.stream().findFirst().orElseThrow();
+
+        posts.stream().forEach(post->{
+            assertAll("check all posts for corresponding username", ()->{
+            post.getPostsByUsers()
+                .stream()
+                .filter(up->up.getUser().getId().equals(userId))
+                .findFirst()
+                .orElseThrow(
+                    ()->new NoSuchElementException("feed doesn't match the username")
+                );
+        });
         });
     }
 }
