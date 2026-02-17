@@ -8,12 +8,15 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.ricky.chronicle.dto.feed.CreateFeedRequest;
-import com.ricky.chronicle.dto.feed.CreateFeedResponse;
+import com.ricky.chronicle.dto.feed.FeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Topic;
+import com.ricky.chronicle.map.FeedMapper;
+import com.ricky.chronicle.map.TopicMapper;
 import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.TopicRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,49 +24,56 @@ import lombok.RequiredArgsConstructor;
 public class FeedService {
     private final FeedRepository feedRepository;
     private final TopicRepository topicRepository;
+    private final FeedMapper feedMapper;
+    private final TopicMapper topicMapper;
 
-    public CreateFeedResponse createFeed(CreateFeedRequest request){
+    @Transactional
+    public FeedResponse createFeed(CreateFeedRequest request){
         String title = request.title();
         String topicString = request.topicString();
         if (feedRepository.findByTitle(title).isPresent()){
             throw new IllegalArgumentException("title already exists");
         }
         Optional<Topic> optionalTopic = topicRepository.findByTopic(topicString);
-        Topic dbTopic = new Topic();
+        Topic topic;
         if (optionalTopic.isEmpty()){
-            Topic topic = new Topic();
-            topic.setTopic(topicString);
-            dbTopic = topicRepository.save(topic);
+            topic = topicMapper.toEntity(topicString);
+            topic = topicRepository.save(topic);
         } else{
-            dbTopic = optionalTopic.get();
+            topic = optionalTopic.get();
         }
         
-        Feed feed = new Feed();
-        feed.setTitle(title);
-        feed.setTopic(dbTopic);
+        Feed feed = feedMapper.ToEntity(request);
+        feed.setTopic(topic);
 
         Feed savedFeed = feedRepository.save(feed);
-        return new CreateFeedResponse(
-            savedFeed.getId(),
-            savedFeed.getTitle(), 
-            savedFeed.getTopic().getTopic(), 
-            savedFeed.getCreatedAt(), 
-            savedFeed.getUpdatedAt()
-        );
+        return feedMapper.toResponse(savedFeed);
     }
 
-    public Optional<Feed> FindFeedByTitle(String title){
-        return feedRepository.findByTitle(title);
+    public FeedResponse FindFeedByTitle(String title){
+        Optional<Feed> optionalFeed = feedRepository.findByTitle(title);
+        if(optionalFeed.isEmpty()){
+            throw new NoSuchElementException("feed not found");
+        }
+        Feed feed = optionalFeed.get();
+        return feedMapper.toResponse(feed);
     }
 
-    public List<Feed> FindAllFeeds(){
-        return feedRepository.findAll();
+    public List<FeedResponse> FindAllFeeds(){
+        List<Feed> feeds = feedRepository.findAll();
+        List<FeedResponse> response = feeds.stream().map(feed->feedMapper.toResponse(feed)).toList();
+
+        return response;
     }
 
-    public List<Feed> FindAllFeedsByUserId(UUID userId){
-        return feedRepository.findAllFeedsByUserId(userId);
+    public List<FeedResponse> FindAllFeedsByUserId(UUID userId){
+        List<Feed> feeds = feedRepository.findAllFeedsByUserId(userId);
+        List<FeedResponse> response = feeds.stream().map(feed->feedMapper.toResponse(feed)).toList();
+
+        return response;
     }
 
+    @Transactional
     public String DeleteFeedById(UUID feedId){
         Optional<Feed> optionalFeed = feedRepository.findById(feedId);
         if(optionalFeed.isEmpty()){

@@ -6,9 +6,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.ricky.chronicle.dto.userPost.UserPostResponse;
 import com.ricky.chronicle.entity.Post;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.entity.UserPost;
+import com.ricky.chronicle.map.UserPostMapper;
 import com.ricky.chronicle.repository.PostRepository;
 import com.ricky.chronicle.repository.UserPostRepository;
 import com.ricky.chronicle.repository.UserRepository;
@@ -21,8 +23,9 @@ public class UserPostService {
     private final UserPostRepository userPostRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final UserPostMapper userPostMapper;
 
-    public UserPost createUserPost(UUID userId, UUID postId){
+    public UserPostResponse createUserPost(UUID userId, UUID postId){
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<Post> optionalPost = postRepository.findById(postId);
         if (optionalUser.isEmpty()){
@@ -37,7 +40,7 @@ public class UserPostService {
 
         UserPost savedUserPost = userPostRepository.save(userPost);
 
-        return savedUserPost;
+        return userPostMapper.toResponse(savedUserPost);
     }
 
     public String deleteUserPostByUserIdAndPostId(UUID userId, UUID postId){

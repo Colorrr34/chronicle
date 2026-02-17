@@ -22,7 +22,7 @@ I am using PostgreSQL database for this project. You can setup your own database
 psql -f db.sql
 ```
 
-Database Migration is handled by Spring-boot with Flyway.
+Database Migration is handled by Spring-boot with Flyway.You need to set up a .env file at the root level so
 
 If you have maven 3.9.2 or later versions. You can just run the programme
 

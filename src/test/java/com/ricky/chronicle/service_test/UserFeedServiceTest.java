@@ -17,9 +17,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ricky.chronicle.dto.userFeed.UserFeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.entity.UserFeed;
+import com.ricky.chronicle.map.UserFeedMapper;
 import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.UserFeedRepository;
 import com.ricky.chronicle.repository.UserRepository;
@@ -39,6 +41,9 @@ public class UserFeedServiceTest {
     @Mock
     FeedRepository mockFeedRepository;
 
+    @Mock
+    UserFeedMapper mockUserFeedMapper;
+
     @InjectMocks
     UserFeedService userFeedService;
 
@@ -53,8 +58,9 @@ public class UserFeedServiceTest {
         when(mockUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));
         when(mockUserFeedRepository.save(any(UserFeed.class))).thenReturn(mockUserFeed);
+        when(mockUserFeedMapper.toResponse(mockUserFeed)).thenReturn(new UserFeedResponse(UUID.randomUUID(), null, null));
 
-        UserFeed userFeed = userFeedService.createUserFeed(userId, feedTitle);
+        UserFeedResponse userFeedResponse = userFeedService.createUserFeed(userId, feedTitle);
 
         verify(mockUserRepository,times(1)).findById(userId);
         verify(mockFeedRepository,times(1)).findByTitle(feedTitle);
@@ -63,7 +69,7 @@ public class UserFeedServiceTest {
             uf.getFeed().getTitle().equals(feedTitle)
         ));
 
-        assertThat(userFeed).isNotNull();
+        assertThat(userFeedResponse).isNotNull();
     }
 
     @Test

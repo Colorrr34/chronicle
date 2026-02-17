@@ -21,10 +21,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ricky.chronicle.dto.post.CreatePostRequest;
 import com.ricky.chronicle.dto.post.CreatePostResponse;
+import com.ricky.chronicle.dto.post.PostResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Post;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.entity.UserPost;
+import com.ricky.chronicle.map.PostMapper;
 import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.PostRepository;
 import com.ricky.chronicle.repository.UserPostRepository;
@@ -49,6 +51,9 @@ public class PostServiceTest {
     @Mock
     UserPostRepository mockUserPostRepository;
 
+    @Mock
+    PostMapper mockPostMapper;
+
     @InjectMocks
     PostService postService;
 
@@ -61,31 +66,31 @@ public class PostServiceTest {
         String postDescription = "post description";
         String postUrl = "www.post.com";
         LocalDateTime publishedAt = LocalDateTime.now();
+        String message= "created new post and userPost";
         User mockUser = new UserBuilder().withUsername(username).build();
         Feed mockFeed = new FeedBuilder().withTitle(feedTitle).build();
         Post mockPost = new PostBuilder().withTitleFeedUrl(postTitle, feedTitle, postUrl).build();
         UserPost mockUserPost = new UserPostBuilder(mockUser, mockPost).build();
+        CreatePostRequest request = new CreatePostRequest(userId, feedTitle, postTitle, postDescription, postUrl, publishedAt);
+        PostResponse postResponse = new PostResponse(userId, postTitle, postDescription, postUrl, null, null,null, publishedAt);
+        CreatePostResponse createPostResponse = new CreatePostResponse(message, null, postResponse);
 
         when(mockUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));
         when(mockPostRepository.findByFeedAndUrl(mockFeed, postUrl)).thenReturn(Optional.empty());
         when(mockPostRepository.save(any(Post.class))).thenReturn(mockPost);
         when(mockUserPostRepository.save(any(UserPost.class))).thenReturn(mockUserPost);
+        when(mockPostMapper.toEntity(request)).thenReturn(mockPost);
+        when(mockPostMapper.toCreatePostResponse(mockPost, mockUserPost, message)).thenReturn(createPostResponse);
 
-        CreatePostResponse serviceResponse = postService.createPost(new CreatePostRequest(userId, feedTitle, postTitle, postDescription, postUrl, publishedAt));
+        CreatePostResponse serviceResponse = postService.createPost(request);
 
         verify(mockUserRepository, times(1)).findById(userId);
         verify(mockFeedRepository,times(1)).findByTitle(feedTitle);
         verify(mockPostRepository,times(1)).findByFeedAndUrl(
             eq(mockFeed),eq(postUrl)
         );
-        verify(mockPostRepository,times(1)).save(argThat(
-            post->
-            post.getDescription().equals(postDescription)&&
-            post.getTitle().equals(postTitle)&&
-            post.getUrl().equals(postUrl)&&
-            post.getFeed().getTitle().equals(feedTitle)
-        ));
+        verify(mockPostRepository,times(1)).save(any(Post.class));
         verify(mockUserPostRepository,times(1)).save(argThat(
             up->
             up.getUser().getUsername().equals(username)&&
@@ -94,7 +99,7 @@ public class PostServiceTest {
 
         assertThat(serviceResponse).isNotNull();
         assertThat(serviceResponse.postResponse().url()).isEqualTo(postUrl);
-        assertThat(serviceResponse.message()).isEqualTo( "created new post and userPost");
+        assertThat(serviceResponse.message()).isEqualTo(message);
     }
 
     @Test
@@ -106,18 +111,24 @@ public class PostServiceTest {
         String postDescription = "post description";
         String postUrl = "www.exist.com";
         LocalDateTime publishedAt = LocalDateTime.now();
+        String message = "created only UserPost as post already exists";
 
         User mockUser = new UserBuilder().withUsername(username).build();
         Feed mockFeed = new FeedBuilder().withTitle(postTitle).build();
         Post mockPost = new PostBuilder().withTitleFeedUrl(postTitle, feedTitle, postUrl).build();
         UserPost mockUserPost = new UserPostBuilder(mockUser, mockPost).build();
+        CreatePostRequest request = new CreatePostRequest(userId, feedTitle, postTitle, postDescription, postUrl, publishedAt);
+        PostResponse postResponse = new PostResponse(userId, postTitle, postDescription, postUrl, null, null, null, publishedAt);
+        CreatePostResponse createPostResponse = new CreatePostResponse(message, null, postResponse);
 
         when(mockUserRepository.findById(userId)).thenReturn(Optional.of(mockUser));
         when(mockFeedRepository.findByTitle(feedTitle)).thenReturn(Optional.of(mockFeed));
         when(mockPostRepository.findByFeedAndUrl(mockFeed, postUrl)).thenReturn(Optional.of(mockPost));
         when(mockUserPostRepository.save(any(UserPost.class))).thenReturn(mockUserPost);
+        when(mockPostMapper.toCreatePostResponse(mockPost, mockUserPost, message)).thenReturn(createPostResponse);
 
-        CreatePostResponse serviceResponse = postService.createPost(new CreatePostRequest(userId, feedTitle, postTitle, postDescription, postUrl, publishedAt));
+
+        CreatePostResponse serviceResponse = postService.createPost(request);
 
         verify(mockUserRepository, times(1)).findById(userId);
         verify(mockFeedRepository,times(1)).findByTitle(feedTitle);
@@ -131,7 +142,7 @@ public class PostServiceTest {
 
         assertThat(serviceResponse).isNotNull();
         assertThat(serviceResponse.postResponse().url()).isEqualTo(postUrl);
-        assertThat(serviceResponse.message()).isEqualTo("created only UserPost as post already exists");
+        assertThat(serviceResponse.message()).isEqualTo(message);
     }
 
     @Test

@@ -6,17 +6,12 @@ import com.ricky.chronicle.dto.user.CreateUserRequest;
 import com.ricky.chronicle.dto.user.UserResponse;
 import com.ricky.chronicle.dto.userFeed.CreateUserFeedRequest;
 import com.ricky.chronicle.dto.userFeed.UserFeedResponse;
-import com.ricky.chronicle.entity.User;
-import com.ricky.chronicle.entity.UserFeed;
-import com.ricky.chronicle.map.UserFeedMapper;
-import com.ricky.chronicle.map.UserMapper;
 import com.ricky.chronicle.service.UserFeedService;
 import com.ricky.chronicle.service.UserPostService;
 import com.ricky.chronicle.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,48 +31,36 @@ public class UserController {
     private final UserService userService;
     private final UserFeedService userFeedService;
     private final UserPostService userPostService;
-    private final UserMapper userMapper;
-    private final UserFeedMapper userFeedMapper;
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> usersResponseList = new ArrayList<>();
-        List<User> users = userService.getAllUsers();
-        for (User user : users){
-            usersResponseList.add(userMapper.toResponse(user));
-        }
+        List<UserResponse> response = userService.getAllUsers();
 
-        return ResponseEntity.ok(usersResponseList);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable UUID userId) {        
-        User user = userService.getUserById(userId);
-        UserResponse userResponse = userMapper.toResponse(user);
+        UserResponse response = userService.getUserById(userId);
 
-        return ResponseEntity.ok(userResponse);
+        return ResponseEntity.ok(response);
     }
     
 
     @PostMapping
     public ResponseEntity<UserResponse> postUser(@RequestBody CreateUserRequest request) {
-        String username = request.username();
-        String rawPassword = request.rawPassword();
-        User user = userService.createUser(username,rawPassword);
+        UserResponse response = userService.createUser(request);
 
-        UserResponse userResponse = userMapper.toResponse(user);
-        
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     
     @PostMapping("/{userId}/feeds")
     public ResponseEntity<UserFeedResponse> postUserFeed(@PathVariable UUID userId, @RequestBody CreateUserFeedRequest request){
         String feedTitle = request.feedTitle();
 
-        UserFeed userFeed = userFeedService.createUserFeed(userId, feedTitle);
+        UserFeedResponse response = userFeedService.createUserFeed(userId, feedTitle);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userFeedMapper.toResponse(userFeed));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping("/{userId}")

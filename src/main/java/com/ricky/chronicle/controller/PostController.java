@@ -1,6 +1,5 @@
 package com.ricky.chronicle.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ricky.chronicle.dto.post.CreatePostRequest;
 import com.ricky.chronicle.dto.post.CreatePostResponse;
 import com.ricky.chronicle.dto.post.PostResponse;
-import com.ricky.chronicle.entity.Post;
-import com.ricky.chronicle.map.PostMapper;
 import com.ricky.chronicle.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,35 +25,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    private final PostMapper postMapper;
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> getAllPosts(){
-        List<PostResponse> postsResponseList = new  ArrayList<>();
-        List<Post> posts = postService.getAllPosts();
-        for (Post post: posts){
-            postsResponseList.add(postMapper.toResponse(post));
-        }
+        List<PostResponse> response = postService.getAllPosts();
 
-        return ResponseEntity.ok(postsResponseList);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<List<PostResponse>> getPostsByUserId(@PathVariable UUID userId) {
-        List<Post> posts = postService.getPostsByUserId(userId);
-        List<PostResponse> postsResponseList = new ArrayList<>();
+        List<PostResponse> response = postService.getPostsByUserId(userId);
 
-        for (Post post:posts){
-            postsResponseList.add(postMapper.toResponse(post));
-        }
-
-        return ResponseEntity.ok(postsResponseList);
+        return ResponseEntity.ok(response);
     }
-    
+
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponse> getPostById(@PathVariable UUID postId){
-        PostResponse postResponse = postMapper.toResponse(postService.getPostById(postId));
+        PostResponse postResponse = postService.getPostById(postId);
 
         return ResponseEntity.ok(postResponse);
     }

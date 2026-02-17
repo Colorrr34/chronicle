@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ricky.chronicle.entity.Topic;
 import com.ricky.chronicle.repository.TopicRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -17,11 +18,11 @@ import lombok.RequiredArgsConstructor;
 public class TopicService {
     private final TopicRepository topicRepository;
 
-    public List<Topic> findAllTopics(){
+    public List<Topic> getAllTopics(){
         return topicRepository.findAll();
     };
 
-    public Topic findTopicByTopic(String topicString){
+    public Topic getTopicByTopic(String topicString){
         Optional<Topic> optionalTopic = topicRepository.findByTopic(topicString);
         if (optionalTopic.isEmpty()){
             throw new NoSuchElementException("Topic not found");
@@ -29,7 +30,7 @@ public class TopicService {
         return optionalTopic.get();
     }
 
-    public Topic findTopicById(UUID id){
+    public Topic getTopicById(UUID id){
         Optional<Topic> optionalTopic = topicRepository.findById(id);
         if (optionalTopic.isEmpty()){
             throw new NoSuchElementException("Topic not found");
@@ -37,12 +38,14 @@ public class TopicService {
         return optionalTopic.get();
     }
 
+    @Transactional
     public Topic createTopic(String topicString){
         Topic topic = new Topic();
         topic.setTopic(topicString);
         return topicRepository.save(topic);
     }
 
+    @Transactional
     public String deleteTopicByTopic(String topicString){
         Optional<Topic> optionalTopic = topicRepository.findByTopic(topicString);
         if (optionalTopic.isEmpty()){

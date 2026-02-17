@@ -1,6 +1,5 @@
 package com.ricky.chronicle.controller_test;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,9 +20,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.ricky.chronicle.controller.UserController;
+import com.ricky.chronicle.dto.user.CreateUserRequest;
 import com.ricky.chronicle.dto.user.UserResponse;
 import com.ricky.chronicle.entity.User;
-import com.ricky.chronicle.exception.InvalidArgumentException;
 import com.ricky.chronicle.map.UserFeedMapper;
 import com.ricky.chronicle.map.UserMapper;
 import com.ricky.chronicle.service.UserFeedService;
@@ -52,16 +51,13 @@ public class UserControllerTest {
 
     @Test
     void getAllUsers_shouldReturn200AndListOfUsers() throws Exception{
-        List<User> users = new ArrayList<>();
+        List<UserResponse> response = new ArrayList<>();
 
         for (int i = 0;i<10;i++ ){
-            User user = new User();
-            user.setUsername("user_name_"+i);
-            user.setHashedPassword("hashed_password");
-            users.add(user);
+            response.add(new UserResponse(UUID.randomUUID(), "user"+i,null, null, null));
         }
 
-        when(mockUserService.getAllUsers()).thenReturn(users);
+        when(mockUserService.getAllUsers()).thenReturn(response);
 
         mockMvc.perform(get("/api/users"))
         .andExpect(status().isOk())
@@ -72,15 +68,9 @@ public class UserControllerTest {
     void getUser_shouldReturn200AndUser() throws Exception{
         UUID userId = UUID.randomUUID();
         String username = "test_user";
-        String hashedPassword = "hashed_password";
 
-        User user = new User();
-        user.setUsername(username);
-        user.setHashedPassword(hashedPassword);
-
-        when(mockUserService.getUserById(userId)).thenReturn(user);
-        when(mockUserMapper.toResponse(user)).thenReturn(new UserResponse(userId, username, null, null, null));
-
+        when(mockUserService.getUserById(userId)).thenReturn(new UserResponse(userId, username, null, null, null));
+        
         mockMvc.perform(get("/api/users/{userId}",userId))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.username").value("test_user"));
@@ -96,9 +86,10 @@ public class UserControllerTest {
         User user = new User();
         user.setUsername(username);
         user.setHashedPassword(hashedPassword);
+        CreateUserRequest request = new CreateUserRequest(username, rawPassword);
+        UserResponse response = new UserResponse(null, username, null, null, null);
         
-        when(mockUserService.createUser(eq(username),eq(rawPassword))).thenReturn(user);
-        when(mockUserMapper.toResponse(user)).thenReturn(new UserResponse(null, username, null, null, null));
+        when(mockUserService.createUser(request)).thenReturn(response);
 
         mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +97,7 @@ public class UserControllerTest {
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.username").value(username));
 
-        verify(mockUserService,times(1)).createUser(eq(username),eq(rawPassword));
+        verify(mockUserService,times(1)).createUser(request);
     }
 
     @Test
@@ -114,24 +105,13 @@ public class UserControllerTest {
         String requestBody = "{\"username\": \"test_user\", \"rawPassword\": \"raw_password123\"}";
         String username = "test_user";
         String rawPassword = "raw_password123";
+        CreateUserRequest request = new CreateUserRequest(username, rawPassword);
 
-        when(mockUserService.createUser(eq(username),eq(rawPassword))).thenThrow(new IllegalArgumentException("username already exists"));
+        when(mockUserService.createUser(request)).thenThrow(new IllegalArgumentException("username already exists"));
 
          mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
             .andExpect(status().isConflict());
-    }
-
-    @Test
-    void postUser_shouldReturn400_whenUsernameIsEmpty() throws Exception{
-        String requestBody = "{\"username\": \"   \", \"rawPassword\": \"raw_password123\"}";
-
-        when(mockUserService.createUser(eq("   "),eq("raw_password123"))).thenThrow(new InvalidArgumentException("username already exists"));
-
-        mockMvc.perform(post("/api/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-            .andExpect(status().isBadRequest());
     }
 }

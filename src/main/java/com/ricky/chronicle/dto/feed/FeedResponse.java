@@ -6,7 +6,7 @@ import java.util.UUID;
 public record FeedResponse(
     UUID id,
     String title,
-    String topicRef,
+    String topic,
     LocalDateTime createdAt,
     LocalDateTime updatedAt
 ) {

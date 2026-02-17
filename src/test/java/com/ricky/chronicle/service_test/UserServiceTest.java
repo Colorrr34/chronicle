@@ -17,8 +17,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ricky.chronicle.auth.AuthService;
+import com.ricky.chronicle.dto.user.CreateUserRequest;
+import com.ricky.chronicle.dto.user.UserResponse;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.exception.InvalidArgumentException;
+import com.ricky.chronicle.map.UserMapper;
 import com.ricky.chronicle.repository.UserRepository;
 import com.ricky.chronicle.service.UserService;
 import com.ricky.chronicle.util.UserBuilder;
@@ -31,6 +34,9 @@ public class UserServiceTest {
     @Mock
     AuthService mockAuthService;
 
+    @Mock
+    UserMapper mockUserMapper;
+
     @InjectMocks
     UserService userService;
 
@@ -40,12 +46,16 @@ public class UserServiceTest {
         String rawPassword = "test_password123";
         String hashedPassword = "hashedPassword";
         User mockUser = new UserBuilder().withUsernameAndHashedPassword(username, hashedPassword).build();
+        CreateUserRequest request = new CreateUserRequest(username, rawPassword);
+        UserResponse response = new UserResponse(null, username, null, null, null);
         
         when(mockAuthService.hashPassword(rawPassword)).thenReturn(hashedPassword);
         when(mockUserRepository.findByUsername(username)).thenReturn(Optional.empty());
         when(mockUserRepository.save(any(User.class))).thenReturn(mockUser);
+        when(mockUserMapper.toEntity(request)).thenReturn(mockUser);
+        when(mockUserMapper.toResponse(mockUser)).thenReturn(response);
 
-        User user =  userService.createUser(username,rawPassword);
+        UserResponse userResponse =  userService.createUser(request);
         
         verify(mockAuthService,times(1)).hashPassword(rawPassword);
 
@@ -55,18 +65,20 @@ public class UserServiceTest {
             &&u.getHashedPassword().equals(hashedPassword))
         );
 
-        assertThat(user).isNotNull();
-        assertThat(user.getUsername()).isEqualTo(username);
+        assertThat(userResponse).isNotNull();
+        assertThat(userResponse.username()).isEqualTo(username);
     }
 
     @Test
     void createUser_shouldThrowException_whenUsernameExists(){
         String username = "existingUser";
         String rawPassword = "password";
+        CreateUserRequest request = new CreateUserRequest(username, rawPassword);
+
         when(mockUserRepository.findByUsername(username)).thenReturn(Optional.of(new User()));
 
         assertThrows(IllegalArgumentException.class, ()->{
-            userService.createUser(username,rawPassword);
+            userService.createUser(request);
         });
 
         verify(mockUserRepository,times(0)).save(any(User.class));
@@ -76,9 +88,10 @@ public class UserServiceTest {
     void createUser_shouldThrowException_whenUsernameFieldIsBlank(){
         String username = "";
         String rawPassword = "raw_password123";
+        CreateUserRequest request = new CreateUserRequest(username, rawPassword);
 
         assertThrows(InvalidArgumentException.class,()->{
-            userService.createUser(username,rawPassword);
+            userService.createUser(request);
         });
     }
 }

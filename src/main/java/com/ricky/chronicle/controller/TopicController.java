@@ -32,7 +32,7 @@ public class TopicController {
 
     @GetMapping
     public ResponseEntity<List<Topic>> getAllTopics() {
-        List<Topic> topics = topicService.findAllTopics();
+        List<Topic> topics = topicService.getAllTopics();
         
         return ResponseEntity.ok(topics);
     }

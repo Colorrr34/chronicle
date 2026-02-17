@@ -1,54 +1,31 @@
 package com.ricky.chronicle.map;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import com.ricky.chronicle.dto.post.CreatePostRequest;
+import com.ricky.chronicle.dto.post.CreatePostResponse;
 import com.ricky.chronicle.dto.post.PostResponse;
-import com.ricky.chronicle.entity.Feed;
+import com.ricky.chronicle.dto.post.PostSummary;
 import com.ricky.chronicle.entity.Post;
-import com.ricky.chronicle.repository.FeedRepository;
+import com.ricky.chronicle.entity.UserPost;
 
-import lombok.RequiredArgsConstructor;
+@Mapper(componentModel = "spring",uses = {FeedMapper.class})
+public interface PostMapper {
+    @Mapping(source = "feed",target = "feedSummary")
+    PostResponse toResponse(Post post);
 
-@Component
-@RequiredArgsConstructor
-public class PostMapper {
-    private final FeedRepository feedRepository;
-    public PostResponse toResponse(Post post){
-        return new PostResponse(
-            post.getId(),
-            post.getTitle(), 
-            post.getDescription(), 
-            post.getUrl(), 
-            post.getFeed().getTitle(), 
-            post.getCreatedAt(), 
-            post.getUpdatedAt(), 
-            post.getPublishedAt()
-        );
-    }
+    @Mapping(source = "feed.title",target="feedTitle")
+    PostSummary toSummary(Post post);
 
-    public Post toPost(CreatePostRequest request){
-        String feedTitle = request.feedTitle();
-        String title = request.title();
-        String description = request.description();
-        String url = request.url();
-        LocalDateTime publishedAt = request.publishedAt();
+    @Mapping(source = "post", target = "postResponse")
+    @Mapping(source = "userPost.id", target = "userPostId")
+    CreatePostResponse toCreatePostResponse(Post post, UserPost userPost, String message);
 
-        Optional<Feed> optionalFeed = feedRepository.findByTitle(feedTitle);
-        if (optionalFeed.isEmpty()){
-            throw new IllegalArgumentException("No such feed");
-        }
-
-        Feed feed = optionalFeed.get();
-        Post post = new Post();
-        post.setTitle(title);
-        post.setFeed(feed);
-        post.setDescription(description);
-        post.setUrl(url);
-        post.setPublishedAt(publishedAt);
-        return post;
-    }
+    @Mapping(target="id",ignore = true)
+    @Mapping(target="feed",ignore = true)
+    @Mapping(target = "createdAt", ignore =true)
+    @Mapping(target="updatedAt",ignore = true)
+    @Mapping(target = "postsByUsers", ignore = true)
+    Post toEntity(CreatePostRequest request);
 }

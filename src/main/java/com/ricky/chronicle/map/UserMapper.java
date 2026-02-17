@@ -1,19 +1,25 @@
 package com.ricky.chronicle.map;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
+import com.ricky.chronicle.dto.user.CreateUserRequest;
 import com.ricky.chronicle.dto.user.UserResponse;
+import com.ricky.chronicle.dto.user.UserSummary;
 import com.ricky.chronicle.entity.User;
 
-@Component
-public class UserMapper {
-    public UserResponse toResponse(User user){
-        return new UserResponse(
-            user.getId(), 
-            user.getUsername(), 
-            user.getCreatedAt(), 
-            user.getUpdatedAt(), 
-            user.getLastLoggedInAt()
-        );
-    }
+@Mapper(componentModel = "spring")
+public interface UserMapper {
+    UserResponse toResponse(User user);
+
+    UserSummary toSummary(User user);
+
+    @Mapping(target = "id",ignore = true)
+    @Mapping(target = "hashedPassword", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "lastLoggedInAt", ignore = true)
+    @Mapping(target = "savedFeeds", ignore = true)
+    @Mapping(target = "savedPosts",ignore = true)
+    User toEntity(CreateUserRequest request);
 }

@@ -8,8 +8,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.ricky.chronicle.auth.AuthService;
+import com.ricky.chronicle.dto.user.CreateUserRequest;
+import com.ricky.chronicle.dto.user.UserResponse;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.exception.InvalidArgumentException;
+import com.ricky.chronicle.map.UserMapper;
 import com.ricky.chronicle.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,22 +22,27 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
     private final UserRepository userRepository;
     private final AuthService authService;
+    private final UserMapper userMapper;
 
-    public List<User> getAllUsers(){
+    public List<UserResponse> getAllUsers(){
         List<User> users = userRepository.findAll();
-        return users;
+        List<UserResponse> response = users.stream().map(user->userMapper.toResponse(user)).toList();
+
+        return response;
     }
 
-    public User getUserById(UUID userId){
+    public UserResponse getUserById(UUID userId){
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isEmpty()){
             throw new NoSuchElementException("user does not exists");
-        }else{
-            return optionalUser.get();
         }
+        User user = optionalUser.get();
+        return userMapper.toResponse(user);
     }
 
-    public User createUser(String username, String rawPassword){
+    public UserResponse createUser(CreateUserRequest request){
+        String username = request.username();
+        String rawPassword = request.rawPassword();
         if (username.isBlank()){
             throw new InvalidArgumentException("username can't be blank");
         }
@@ -42,14 +50,22 @@ public class UserService {
             throw new IllegalArgumentException("username already exists");
         }
         String hashedPassword = authService.hashPassword(rawPassword);
-        User user = new User();
-        user.setUsername(username);
+
+        User user = userMapper.toEntity(request);
         user.setHashedPassword(hashedPassword);
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        return userMapper.toResponse(savedUser);
     }
 
-    public Optional<User> findUserByUsername(String username){
-        return userRepository.findByUsername(username);
+    public UserResponse findUserByUsername(String username){
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if(optionalUser.isEmpty()){
+            throw new NoSuchElementException("user not found");
+        }
+        User user = optionalUser.get();
+        
+        return userMapper.toResponse(user);
     }
 
     public String deleteUser(UUID userId, String rawPassword){

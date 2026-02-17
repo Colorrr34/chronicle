@@ -8,7 +8,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +18,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
 import com.ricky.chronicle.dto.feed.CreateFeedRequest;
-import com.ricky.chronicle.dto.feed.CreateFeedResponse;
+import com.ricky.chronicle.dto.feed.FeedResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Topic;
+import com.ricky.chronicle.map.FeedMapper;
+import com.ricky.chronicle.map.TopicMapper;
 import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.TopicRepository;
 import com.ricky.chronicle.service.FeedService;
@@ -37,17 +42,27 @@ public class FeedServiceTest {
     @InjectMocks
     FeedService feedService;
 
+    @Mock
+    FeedMapper mockFeedMapper;
+    
+    @Mock
+    TopicMapper mockTopicMapper;
+
     @Test
     void createFeed_shouldCreateFeedWithTopic_whenTopicExists(){
         String topicString = "test topic";
         String title = "test title";
         Topic mockTopic = new TopicBuilder().withTopic(topicString).build();
         Feed mockFeed = new FeedBuilder().withTitleAndTopic(title, topicString).build();
+        CreateFeedRequest request = new CreateFeedRequest(title, topicString);
+        FeedResponse response = new FeedResponse(null, title, topicString, null, null);
 
         when(mockTopicRepository.findByTopic(topicString)).thenReturn(Optional.of(mockTopic));
         when(mockFeedRepository.save(any(Feed.class))).thenReturn(mockFeed);
+        when(mockFeedMapper.ToEntity(request)).thenReturn(mockFeed);
+        when(mockFeedMapper.toResponse(mockFeed)).thenReturn(response);
 
-        CreateFeedResponse feedResponse = feedService.createFeed(new CreateFeedRequest(title, topicString));
+        FeedResponse feedResponse = feedService.createFeed(request);
 
         verify(mockFeedRepository,times(1)).save(argThat(
             feed->
@@ -56,8 +71,7 @@ public class FeedServiceTest {
         ));
 
         assertThat(feedResponse).isNotNull();
-        assertThat(feedResponse.topic()).isEqualTo(topicString);
-        assertThat(feedResponse.title()).isEqualTo(title);
+        assertThat(feedResponse).isEqualTo(response);
     }
 
     @Test
@@ -66,12 +80,17 @@ public class FeedServiceTest {
         String title = "test title";
         Topic mockTopic = new TopicBuilder().withTopic(topicString).build();
         Feed mockFeed = new FeedBuilder().withTitleAndTopic(title, topicString).build();
+        CreateFeedRequest request = new CreateFeedRequest(title, topicString);
+        FeedResponse response = new FeedResponse(UUID.randomUUID(), title, topicString, LocalDateTime.now(), LocalDateTime.now());
 
         when(mockTopicRepository.findByTopic(topicString)).thenReturn(Optional.empty());
         when(mockTopicRepository.save(any(Topic.class))).thenReturn(mockTopic);
         when(mockFeedRepository.save(any(Feed.class))).thenReturn(mockFeed);
+        when(mockFeedMapper.ToEntity(request)).thenReturn(mockFeed);
+        when(mockFeedMapper.toResponse(mockFeed)).thenReturn(response);
+        when(mockTopicMapper.toEntity(topicString)).thenReturn(mockTopic);
 
-        CreateFeedResponse feedResponse = feedService.createFeed(new CreateFeedRequest(title, topicString));
+        FeedResponse feedResponse = feedService.createFeed(request);
 
         verify(mockTopicRepository,times(1)).findByTopic(topicString);
         verify(mockTopicRepository,times(1)).save(argThat(

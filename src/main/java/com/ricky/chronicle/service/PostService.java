@@ -1,11 +1,9 @@
 package com.ricky.chronicle.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 
 import com.ricky.chronicle.dto.post.CreatePostRequest;
@@ -15,11 +13,13 @@ import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Post;
 import com.ricky.chronicle.entity.User;
 import com.ricky.chronicle.entity.UserPost;
+import com.ricky.chronicle.map.PostMapper;
 import com.ricky.chronicle.repository.FeedRepository;
 import com.ricky.chronicle.repository.PostRepository;
 import com.ricky.chronicle.repository.UserPostRepository;
 import com.ricky.chronicle.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,14 +29,13 @@ public class PostService {
     private final UserRepository userRepository;
     private final FeedRepository feedRepository;
     private final UserPostRepository userPostRepository;
+    private final PostMapper postMapper;
 
+    @Transactional
     public CreatePostResponse createPost(CreatePostRequest request){
         UUID userId = request.userId();
         String feedTitle = request.feedTitle();
-        String title = request.title();
-        String description = request.description();
         String url = request.url();
-        LocalDateTime publishedAt = request.publishedAt();
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()){
             throw new IllegalArgumentException("No such user");
@@ -47,61 +46,51 @@ public class PostService {
             throw new IllegalArgumentException("No such feed");
         }
         Feed feed = optionalFeed.get();
-        Post post = new Post();
-        Post dbPost;
+        Post savedPost;
         Optional<Post> optionalPost = postRepository.findByFeedAndUrl(feed, url);
         String message;
         if(optionalPost.isEmpty()){
-            post.setTitle(title);
+            Post post = postMapper.toEntity(request);
             post.setFeed(feed);
-            post.setDescription(description);
-            post.setUrl(url);
-            post.setPublishedAt(publishedAt);
-            dbPost = postRepository.save(post);
+            savedPost = postRepository.save(post);
+
             message = "created new post and userPost";
         }else{
-            dbPost = optionalPost.get();
+            savedPost = optionalPost.get();
             message = "created only UserPost as post already exists";
         } 
         
         UserPost userPost = new UserPost();
         userPost.setUser(user);
-        userPost.setPost(dbPost);
+        userPost.setPost(savedPost);
 
         UserPost savedUserPost = userPostRepository.save(userPost);
-        return new CreatePostResponse(
-            message,
-            dbPost.getId(), 
-            savedUserPost.getId(),
-            new PostResponse(
-                dbPost.getId(), 
-                dbPost.getTitle(), 
-                dbPost.getDescription(), 
-                dbPost.getUrl(), 
-                dbPost.getFeed().getTitle(), 
-                dbPost.getCreatedAt(), 
-                dbPost.getUpdatedAt(), 
-                dbPost.getPublishedAt()
-            )
-        );
+        return postMapper.toCreatePostResponse(savedPost, savedUserPost, message);
     }
 
-    public List<Post> getAllPosts(){
-        return postRepository.findAll();
+    public List<PostResponse> getAllPosts(){
+        List<Post> posts = postRepository.findAll();
+        List<PostResponse> response = posts.stream().map(post->postMapper.toResponse(post)).toList();
+        return response;
     }
 
-    public Post getPostById(UUID id){
+    public PostResponse getPostById(UUID id){
         Optional<Post> optionalPost = postRepository.findById(id);
         if (optionalPost.isEmpty()){
             throw new NoSuchElementException("Post not found");
         }
-        return optionalPost.get();
+        Post post = optionalPost.get();
+        return postMapper.toResponse(post);
     }
 
-    public List<Post> getPostsByUserId(UUID userId){
-        return postRepository.findAllPostsByUserId(userId);
+    public List<PostResponse> getPostsByUserId(UUID userId){
+        List<Post> posts = postRepository.findAllPostsByUserId(userId);
+        List<PostResponse> response = posts.stream().map(post->postMapper.toResponse(post)).toList();
+
+        return response;
     }
 
+    @Transactional
     public String deletePostById(UUID postId){
         Optional<Post> optionalPost = postRepository.findById(postId);
         if(optionalPost.isEmpty()){

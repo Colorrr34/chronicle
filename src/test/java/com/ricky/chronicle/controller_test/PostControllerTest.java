@@ -27,8 +27,8 @@ import com.ricky.chronicle.dto.post.CreatePostResponse;
 import com.ricky.chronicle.dto.post.PostResponse;
 import com.ricky.chronicle.entity.Feed;
 import com.ricky.chronicle.entity.Post;
-import com.ricky.chronicle.map.PostMapper;
 import com.ricky.chronicle.service.PostService;
+
 
 @WebMvcTest(PostController.class)
 public class PostControllerTest {
@@ -38,24 +38,20 @@ public class PostControllerTest {
     @MockitoBean
     private PostService mockPostService;
 
-    @MockitoBean
-    private PostMapper mockPostMapper;
 
     @Test
     void getAllPosts_shouldReturn200AndListofPosts()throws Exception{
-        List<Post> posts = new ArrayList<>();
+        List<PostResponse> response = new ArrayList<>();
 
         IntStream.range(0, 10).forEach(i->{
-            Post post = new Post();
-            post.setTitle("Title "+i);
-            post.setDescription("description");
-            post.setFeed(new Feed());
-            post.setPublishedAt(LocalDateTime.now());
-            post.setUrl("www.example.com/"+i);
-            posts.add(post);
+            String title = "Title "+i;
+            String description = "description";
+            LocalDateTime publishedAt = LocalDateTime.now();
+            String url = "www.example.com/"+i;
+            response.add(new PostResponse(null, title, description, url, null, null, null, publishedAt));
         });
 
-        when(mockPostService.getAllPosts()).thenReturn(posts);
+        when(mockPostService.getAllPosts()).thenReturn(response);
 
         mockMvc.perform(get("/api/posts"))
         .andExpect(status().isOk())
@@ -71,10 +67,7 @@ public class PostControllerTest {
         post.setFeed(new Feed());
         post.setPublishedAt(LocalDateTime.now());
         post.setUrl("www.example.com");
-
-        when(mockPostService.getPostById(id)).thenReturn(post);
-        when(mockPostMapper.toResponse(post))
-        .thenReturn(new PostResponse(
+        PostResponse postResponse = new PostResponse(
             id, 
             post.getTitle(), 
             post.getDescription(), 
@@ -83,7 +76,9 @@ public class PostControllerTest {
             null, 
             null, 
             post.getPublishedAt()
-        ));
+        );
+
+        when(mockPostService.getPostById(id)).thenReturn(postResponse);
 
         mockMvc.perform(get("/api/posts/{id}",id))
         .andExpect(status().isOk())
@@ -94,19 +89,17 @@ public class PostControllerTest {
     void getPostByUserId_shouldReturn200AndAListOfPost() throws Exception{
         UUID id = UUID.randomUUID();
 
-        List<Post> posts = new ArrayList<>();
+        List<PostResponse> response = new ArrayList<>();
 
         IntStream.range(0, 10).forEach(i->{
-            Post post = new Post();
-            post.setTitle("Title "+i);
-            post.setDescription("description");
-            post.setFeed(new Feed());
-            post.setPublishedAt(LocalDateTime.now());
-            post.setUrl("www.example.com/"+i);
-            posts.add(post);
+            String title = "Title "+i;
+            String description = "description";
+            LocalDateTime publishedAt = LocalDateTime.now();
+            String url = "www.example.com/"+i;
+            response.add(new PostResponse(null, title, description, url, null, null, null, publishedAt));
         });
 
-        when(mockPostService.getPostsByUserId(id)).thenReturn(posts);
+        when(mockPostService.getPostsByUserId(id)).thenReturn(response);
 
         mockMvc.perform(get("/api/posts/users/{id}",id))
         .andExpect(status().isOk())
@@ -123,10 +116,8 @@ public class PostControllerTest {
         String feedTitle = "feed title";
         String description = "description";
         String url = "www.example.com";
-        CreatePostRequest request = new CreatePostRequest(userId, feedTitle, feedTitle, description, url, null);
-        UUID postId = UUID.randomUUID();
-        UUID userPostId = UUID.randomUUID();
-        CreatePostResponse response = new CreatePostResponse(message, userId, userPostId, new PostResponse(postId, title, description, url, feedTitle, null, null, null));
+        CreatePostRequest request = new CreatePostRequest(userId, title, feedTitle, description, url, null);
+        CreatePostResponse response = new CreatePostResponse(message, null, new PostResponse(userId, feedTitle, description, url, null, null, null, null));
 
         when(mockPostService.createPost(request)).thenReturn(response);
 
