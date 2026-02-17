@@ -1,4 +1,4 @@
-package com.ricky.chronicle.Repository;
+package com.ricky.chronicle.repository_test;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 
