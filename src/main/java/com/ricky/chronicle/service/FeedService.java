@@ -74,13 +74,12 @@ public class FeedService {
     }
 
     @Transactional
-    public String DeleteFeedById(UUID feedId){
+    public void DeleteFeedById(UUID feedId){
         Optional<Feed> optionalFeed = feedRepository.findById(feedId);
         if(optionalFeed.isEmpty()){
             throw new NoSuchElementException("feed not found ");
         }
 
         feedRepository.delete(optionalFeed.get());
-        return "feed deleted";
     }
 }
