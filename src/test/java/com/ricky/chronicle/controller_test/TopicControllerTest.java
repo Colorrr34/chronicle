@@ -22,9 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.ricky.chronicle.controller.TopicController;
 import com.ricky.chronicle.dto.topic.TopicResponse;
 import com.ricky.chronicle.entity.Topic;
-import com.ricky.chronicle.map.TopicMapper;
 import com.ricky.chronicle.service.TopicService;
-import com.ricky.chronicle.util.TopicBuilder;
+
 
 @WebMvcTest(TopicController.class)
 public class TopicControllerTest {
@@ -34,20 +33,18 @@ public class TopicControllerTest {
     @MockitoBean
     private TopicService mockTopicService;
 
-    @MockitoBean
-    private TopicMapper mockTopicMapper;
-
     @Test
     void getAllTopics_shouldReturn200AndAListOfTopics() throws Exception{
-        List<Topic> topics = new ArrayList<>();
+        List<TopicResponse> response = new ArrayList<>();
 
         IntStream.range(0, 10).forEach(i->{
             Topic topic = new Topic();
-            topic.setTopic("topic "+i);
-            topics.add(topic);
+            String topicString = "topic "+i;
+            topic.setTopic(topicString);
+            response.add(new TopicResponse(null, topicString));
         });
 
-        when(mockTopicService.getAllTopics()).thenReturn(topics);
+        when(mockTopicService.getAllTopics()).thenReturn(response);
 
         mockMvc.perform(get("/api/topics"))
         .andExpect(status().isOk())
@@ -58,10 +55,9 @@ public class TopicControllerTest {
     void postTopic_shouldReturn200AndATopic() throws Exception{
         String requestBody = "{\"topic\": \"topic\"}";
         String topicString = "topic";
-        Topic topic = new TopicBuilder().withTopic(topicString).build();
+        TopicResponse response = new TopicResponse(null, topicString);
 
-        when(mockTopicService.createTopic(topicString)).thenReturn(topic);
-        when(mockTopicMapper.toResponse(topic)).thenReturn(new TopicResponse(null, topicString));
+        when(mockTopicService.createTopic(topicString)).thenReturn(response);
 
         mockMvc.perform(
             post("/api/topics").contentType(MediaType.APPLICATION_JSON).content(requestBody)
@@ -70,11 +66,8 @@ public class TopicControllerTest {
     }
 
     @Test
-    void deleteTopic_shouldReturn200AndAMessage() throws Exception{
-        when(mockTopicService.deleteTopicByTopic("topic")).thenReturn("topic deleted");
-
+    void deleteTopic_shouldReturn204() throws Exception{
         mockMvc.perform(delete("/api/topics/{topic}","topic"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$").value("topic deleted"));
+        .andExpect(status().isNoContent());
     }
 }

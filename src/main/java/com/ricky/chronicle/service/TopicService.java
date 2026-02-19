@@ -7,7 +7,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.ricky.chronicle.dto.topic.TopicResponse;
 import com.ricky.chronicle.entity.Topic;
+import com.ricky.chronicle.map.TopicMapper;
 import com.ricky.chronicle.repository.TopicRepository;
 
 import jakarta.transaction.Transactional;
@@ -17,41 +19,48 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TopicService {
     private final TopicRepository topicRepository;
+    private final TopicMapper topicMapper;
 
-    public List<Topic> getAllTopics(){
-        return topicRepository.findAll();
+    public List<TopicResponse> getAllTopics(){
+        List<Topic> topics = topicRepository.findAll();
+        List<TopicResponse> response = topics.stream().map(topic->topicMapper.toResponse(topic)).toList();
+        return response;
     };
 
-    public Topic getTopicByTopic(String topicString){
+    public TopicResponse getTopicByTopic(String topicString){
         Optional<Topic> optionalTopic = topicRepository.findByTopic(topicString);
         if (optionalTopic.isEmpty()){
             throw new NoSuchElementException("Topic not found");
         }
-        return optionalTopic.get();
+        Topic topic = optionalTopic.get();
+        return topicMapper.toResponse(topic);
     }
 
-    public Topic getTopicById(UUID id){
+    public TopicResponse getTopicById(UUID id){
         Optional<Topic> optionalTopic = topicRepository.findById(id);
         if (optionalTopic.isEmpty()){
             throw new NoSuchElementException("Topic not found");
         }
-        return optionalTopic.get();
+        Topic topic = optionalTopic.get();
+        return topicMapper.toResponse(topic);
     }
 
     @Transactional
-    public Topic createTopic(String topicString){
+    public TopicResponse createTopic(String topicString){
+        if(!topicRepository.findByTopic(topicString).isEmpty()){
+            throw new IllegalArgumentException("topic already exists");
+        }
         Topic topic = new Topic();
         topic.setTopic(topicString);
-        return topicRepository.save(topic);
+        return topicMapper.toResponse(topicRepository.save(topic));
     }
 
     @Transactional
-    public String deleteTopicByTopic(String topicString){
+    public void deleteTopicByTopic(String topicString){
         Optional<Topic> optionalTopic = topicRepository.findByTopic(topicString);
         if (optionalTopic.isEmpty()){
             throw new NoSuchElementException("topic not found");
         }
         topicRepository.delete(optionalTopic.get());
-        return "topic deleted";
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -64,23 +65,20 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable UUID userId, @RequestBody String rawPassword){
-        String message = userService.deleteUser(userId, rawPassword);
-
-        return ResponseEntity.ok(message);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable UUID userId, @RequestBody String rawPassword){
+        userService.deleteUser(userId, rawPassword);
     }
 
     @DeleteMapping("/{userid}/feeds/{feedId}")
-    public ResponseEntity<String> deleteUserFeed(@PathVariable UUID userId, @PathVariable UUID feedId){
-        String message = userFeedService.deleteUserFeedByUserIdAndFeedId(userId, feedId);
-
-        return ResponseEntity.ok(message);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserFeed(@PathVariable UUID userId, @PathVariable UUID feedId){
+        userFeedService.deleteUserFeedByUserIdAndFeedId(userId, feedId);
     }
 
     @DeleteMapping("/{userId}/posts/{postId}")
-    public ResponseEntity<String> deleteUserPost(@PathVariable UUID userId, @PathVariable UUID postId){
-        String message = userPostService.deleteUserPostByUserIdAndPostId(userId, postId);
-
-        return ResponseEntity.ok(message);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserPost(@PathVariable UUID userId, @PathVariable UUID postId){
+        userPostService.deleteUserPostByUserIdAndPostId(userId, postId);
     }
 }
