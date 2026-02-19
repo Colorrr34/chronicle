@@ -10,13 +10,13 @@ function App() {
     <>
       <Header />
       <div className="body-container">
-        <Routes>
-          <Sidebar />
-          <div className="content-body">
+        <Sidebar />
+        <div className="content-body">
+          <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/api" element={<ApiDocumentation />} />
-          </div>
-        </Routes>
+          </Routes>
+        </div>
       </div>
     </>
   );

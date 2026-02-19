@@ -15,7 +15,7 @@ public interface PostMapper {
     @Mapping(source = "feed",target = "feedSummary")
     PostResponse toResponse(Post post);
 
-    @Mapping(source = "feed.title",target="feedTitle")
+    @Mapping(source = "feed",target="feedSummary")
     PostSummary toSummary(Post post);
 
     @Mapping(source = "post", target = "postResponse")

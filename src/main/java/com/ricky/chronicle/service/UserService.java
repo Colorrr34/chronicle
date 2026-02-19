@@ -74,7 +74,8 @@ public class UserService {
             throw new NoSuchElementException("User does not exists");
         }
         User user = optionalUser.get();
-        if(!authService.verifyPassword(user.getHashedPassword(), rawPassword)){
+        System.out.println(rawPassword);
+        if(!authService.verifyPassword(rawPassword, user.getHashedPassword())){
             throw new IllegalArgumentException("password does not match");
         }
         userRepository.delete(user);
