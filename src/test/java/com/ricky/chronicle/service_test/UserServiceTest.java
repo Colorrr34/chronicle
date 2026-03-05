@@ -8,7 +8,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -92,6 +95,22 @@ public class UserServiceTest {
 
         assertThrows(InvalidArgumentException.class,()->{
             userService.createUser(request);
+        });
+    }
+
+    @Test
+    void getAllUsers_shouldReturnAListOfUserResponses(){
+        List<User> users = new ArrayList<>();
+        
+        IntStream.range(0, 10).forEach(i->{
+            User user = new UserBuilder().withUsername("user "+i).build();
+            users.add(user);
+        });
+
+        when(mockUserRepository.findAll()).thenReturn(users);
+        when(mockUserMapper.toResponse(any(User.class))).thenAnswer(invocation->{
+            User u = invocation.getArgument(0);
+            return new UserResponse(null, u.getUsername(), null, null, null);
         });
     }
 }

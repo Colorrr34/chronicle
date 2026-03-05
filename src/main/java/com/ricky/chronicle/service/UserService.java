@@ -31,6 +31,14 @@ public class UserService {
         return response;
     }
 
+    public User getAuthuser(UUID userId){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()){
+            throw new NoSuchElementException("user does not exists");
+        }
+        return optionalUser.get();
+    }
+
     public UserResponse getUserById(UUID userId){
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isEmpty()){
@@ -58,14 +66,12 @@ public class UserService {
         return userMapper.toResponse(savedUser);
     }
 
-    public UserResponse findUserByUsername(String username){
+    public User getUserByUsername(String username){
         Optional<User> optionalUser = userRepository.findByUsername(username);
         if(optionalUser.isEmpty()){
             throw new NoSuchElementException("user not found");
         }
-        User user = optionalUser.get();
-        
-        return userMapper.toResponse(user);
+        return optionalUser.get();
     }
 
     public String deleteUser(UUID userId, String rawPassword){
